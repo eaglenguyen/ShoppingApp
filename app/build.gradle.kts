@@ -65,6 +65,9 @@ dependencies {
     ksp(libs.hilt.compiler)
     implementation(libs.androidx.compose.animation)
 
+    //Retrofit
+    implementation(libs.retrofit)
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
