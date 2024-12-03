@@ -8,7 +8,7 @@ class AuthRepositoryImpl(
     private val prefs: SharedPreferences
 ): AuthRepository {
 
-    override suspend fun signUp(name: String, email: String, password: String): AuthResult<Unit> {
+    override suspend fun signUp(name: String?, email: String, password: String): AuthResult<Unit> {
         return try {
             api.signUp(
                 request = AuthRequest(
@@ -28,7 +28,7 @@ class AuthRepositoryImpl(
         }
 
 
-    override suspend fun signIn(name: String, email: String, password: String): AuthResult<Unit> {
+    override suspend fun signIn(name: String?, email: String, password: String): AuthResult<Unit> {
         return try {
             val response = api.signIn(
                 request = AuthRequest(

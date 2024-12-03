@@ -6,7 +6,6 @@ plugins {
     alias(libs.plugins.kotlinAndroidKsp)
     alias(libs.plugins.hiltAndroid)
     alias(libs.plugins.kotlin.serialization)
-    id("com.google.gms.google-services")
 }
 
 android {
@@ -56,8 +55,7 @@ dependencies {
     implementation(libs.androidx.material3)
 
     implementation(libs.androidx.lifecycle.viewmodel.compose)
-    implementation(libs.firebase.firestore)
-    implementation(libs.firebase.auth)
+
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation)
     implementation(libs.navigation.compose)
