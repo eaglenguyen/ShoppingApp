@@ -11,7 +11,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -25,6 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun SignUpScreen(
+    onClickToSignIn: () -> Unit,
     viewModel: AuthViewModel = hiltViewModel()
 ) {
 
@@ -36,7 +41,7 @@ fun SignUpScreen(
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = Modifier.height(45.dp))
 
         // Top bar
         Text(
@@ -63,8 +68,14 @@ fun SignUpScreen(
 
         // Email Field
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
+            value = state.signUpEmail,
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Email,
+                    contentDescription = null
+                )
+            },
+            onValueChange = { viewModel.onEvent(AuthUiEvent.SignUpEmailChanged(it)) },
             label = { Text("Email") },
             modifier = Modifier.fillMaxWidth()
         )
@@ -73,8 +84,14 @@ fun SignUpScreen(
 
         // Password Field
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
+            value = state.signUpPassword,
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Lock,
+                    contentDescription = null
+                )
+            },
+            onValueChange = { viewModel.onEvent(AuthUiEvent.SignUpPasswordChanged(it)) },
             label = { Text("Password") },
             modifier = Modifier.fillMaxWidth()
         )
@@ -88,13 +105,13 @@ fun SignUpScreen(
         ) {
             Text(
                 text = "Already have an account?",
-                modifier = Modifier.clickable { /* Navigate to Sign In */ }
+                modifier = Modifier.clickable { onClickToSignIn() }
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = "→",
                 color = Color.Red,
-                modifier = Modifier.clickable { /* Navigate to Sign In */ }
+                modifier = Modifier.clickable { onClickToSignIn() }
             )
         }
 

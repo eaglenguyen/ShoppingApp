@@ -9,9 +9,9 @@ lifecycleRuntimeKtx = "2.6.1"
 activityCompose = "1.8.0"
 composeBom = "2024.04.01"
 
-compilerVersion = "2.48"
+compilerVersion = "2.52"
 kspVersion = "2.1.0-1.0.29"
-hiltVersion = "2.50"
+hiltVersion = "2.52"
 
 lifecycleViewmodelCompose = "2.8.2"
 hiltNavigation = "1.2.0"
