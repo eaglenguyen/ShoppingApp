@@ -1,5 +1,6 @@
 package com.example.shoppingapp.presentation.authscreen
 
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,20 +21,49 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.shoppingapp.auth.AuthResult
 
 @Composable
 fun SignUpScreen(
     onClickToSignIn: () -> Unit,
+    onClickToHome: () -> Unit,
     viewModel: AuthViewModel = hiltViewModel()
 ) {
 
     val state = viewModel.state
+    val context = LocalContext.current
+
+    LaunchedEffect(viewModel, context) {
+        viewModel.authResult.collect { result ->
+            when(result) {
+                is AuthResult.Authorized -> {
+                    onClickToHome()
+                }
+                is AuthResult.Unauthorized -> {
+                    Toast.makeText(
+                        context,
+                        "You are not authorized",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                is AuthResult.UnknownError -> {
+                    Toast.makeText(
+                        context,
+                        "An unknown error occurred",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -58,6 +88,8 @@ fun SignUpScreen(
             value = state.signUpName,
             onValueChange = { viewModel.onEvent(AuthUiEvent.SignUpNameChanged(it)) },
             label = { Text("Name") },
+            maxLines = 1,
+            singleLine = true,
             trailingIcon = {
 
             },
@@ -69,6 +101,8 @@ fun SignUpScreen(
         // Email Field
         OutlinedTextField(
             value = state.signUpEmail,
+            maxLines = 1,
+            singleLine = true,
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Email,
@@ -85,6 +119,8 @@ fun SignUpScreen(
         // Password Field
         OutlinedTextField(
             value = state.signUpPassword,
+            maxLines = 1,
+            singleLine = true,
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Lock,
@@ -119,7 +155,7 @@ fun SignUpScreen(
 
         // Sign Up Button
         Button(
-            onClick = { /* Handle Sign Up */ },
+            onClick = { viewModel.onEvent(AuthUiEvent.SignUp) },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp)

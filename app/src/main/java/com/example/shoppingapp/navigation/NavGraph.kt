@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.shoppingapp.presentation.authscreen.SignInScreen
 import com.example.shoppingapp.presentation.authscreen.SignUpScreen
+import com.example.shoppingapp.presentation.home.HomeScreen
 
 @Composable
 fun NavGraph (
@@ -18,6 +19,9 @@ fun NavGraph (
                SignUpScreen(
                    onClickToSignIn =  {
                        navController.navigate(SignInScreen)
+                   },
+                   onClickToHome = {
+                       navController.navigate(HomeScreen)
                    }
                )
            }
@@ -26,8 +30,15 @@ fun NavGraph (
                SignInScreen(
                    onClickPrevious = {
                        navController.navigateUp()
+                   },
+                   onClickToHome = {
+                       navController.navigate(HomeScreen)
                    }
                )
+           }
+
+           composable<HomeScreen> {
+               HomeScreen()
            }
        }
 

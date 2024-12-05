@@ -8,3 +8,6 @@ object SignUpScreen
 @Serializable
 object SignInScreen
 
+@Serializable
+object HomeScreen
+

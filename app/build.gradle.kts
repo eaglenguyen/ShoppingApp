@@ -66,6 +66,8 @@ dependencies {
     //Retrofit
     implementation(libs.retrofit)
 
+    //Moshi
+    implementation(libs.moshi)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
