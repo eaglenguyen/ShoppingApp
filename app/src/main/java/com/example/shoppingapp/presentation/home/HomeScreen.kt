@@ -19,14 +19,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.shoppingapp.auth.AuthResult
-import com.example.shoppingapp.presentation.authscreen.AuthUiEvent
-import com.example.shoppingapp.presentation.authscreen.AuthViewModel
+import com.example.shoppingapp.util.Resource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    viewModel: AuthViewModel = hiltViewModel(),
+    viewModel: HomeViewModel = hiltViewModel(),
     onClickToSignUpScreen: () -> Unit
 ) {
 
@@ -34,12 +32,12 @@ fun HomeScreen(
     val context = LocalContext.current
 
     LaunchedEffect(viewModel, context) {
-        viewModel.authResult.collect { result ->
+        viewModel.homeResult.collect { result ->
             when(result) {
-                is AuthResult.Authorized -> {
+                is Resource.Success-> {
                     Unit
                 }
-                is AuthResult.Unauthorized -> {
+                is Resource.Unauthorized -> {
                     Toast.makeText(
                         context,
                         "You have signed out",
@@ -47,12 +45,16 @@ fun HomeScreen(
                     ).show()
                     onClickToSignUpScreen()
                 }
-                is AuthResult.UnknownError -> {
+                is Resource.Error -> {
                     Toast.makeText(
                         context,
                         "An unknown error occurred",
                         Toast.LENGTH_LONG
                     ).show()
+                }
+
+                is Resource.Loading -> {
+                    Unit
                 }
             }
         }
@@ -84,7 +86,7 @@ fun HomeScreen(
                     },
                     confirmButton = {
                         TextButton(onClick = {
-                            viewModel.onEvent(AuthUiEvent.SignOut)
+                            viewModel.onEvent(HomeScreenUiEvent.SignOut)
                             viewModel.showDialogState()
                         }) {
                             Text("Confirm")

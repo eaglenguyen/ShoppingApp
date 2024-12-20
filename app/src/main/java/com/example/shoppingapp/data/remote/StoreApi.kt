@@ -1,6 +1,6 @@
 package com.example.shoppingapp.data.remote
 
-import com.example.shoppingapp.domain.model.Products
+import com.example.shoppingapp.domain.model.Product
 import retrofit2.http.GET
 
 interface StoreApi {
@@ -11,7 +11,7 @@ interface StoreApi {
 
     @GET("/products")
     suspend fun getProducts(
-    ): Products
+    ): List<Product>
 
 
 

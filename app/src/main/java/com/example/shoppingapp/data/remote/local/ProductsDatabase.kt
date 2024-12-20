@@ -6,7 +6,7 @@ import androidx.room.TypeConverters
 import com.example.shoppingapp.data.util.Converters
 
 
-@Database(entities = [ProductsEntity::class], version = 1)
+@Database(entities = [ProductsEntity::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class ProductsDatabase: RoomDatabase() {
 

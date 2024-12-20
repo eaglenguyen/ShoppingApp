@@ -7,20 +7,47 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.shoppingapp.domain.repository.ProductsRepository
 import com.example.shoppingapp.util.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HomeViewModel(
+@HiltViewModel
+class HomeViewModel @Inject constructor(
     private val repository: ProductsRepository
 ): ViewModel() {
 
-    private var state by mutableStateOf(HomeState())
+    var state by mutableStateOf(HomeState())
+
+
+    private val resultChannel = Channel<Resource<Unit>>()
+    val homeResult = resultChannel.receiveAsFlow()
 
 
     init {
         showProducts()
     }
 
-    private fun showProducts() {
+    fun showDialogState() {
+        state = state.copy(showDialog = !state.showDialog)
+    }
+
+    fun onEvent(event: HomeScreenUiEvent) {
+        when(event) {
+            HomeScreenUiEvent.SignOut -> signOut()
+        }
+    }
+    private fun signOut() {
+        viewModelScope.launch {
+            state = state.copy(isLoading = true)
+            val result = repository.signOut()
+            resultChannel.send(result)
+            state = state.copy(isLoading = false)
+        }
+    }
+
+        private fun showProducts() {
         viewModelScope.launch {
             repository.getProductsList().collect {
                 when(it) {
@@ -32,7 +59,11 @@ class HomeViewModel(
                         state = state.copy(isLoading = false)
                     }
                     is Resource.Success -> {
-                        state = state.copy(isLoading = false, productList = it.data!!.products)
+                        state = state.copy(isLoading = false, productList = it.data!!)
+                    }
+
+                    is Resource.Unauthorized -> {
+                        state = state.copy(isLoading = false)
                     }
                 }
             }

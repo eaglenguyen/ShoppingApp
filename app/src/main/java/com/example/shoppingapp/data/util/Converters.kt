@@ -3,6 +3,7 @@ package com.example.shoppingapp.data.util
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
 import com.example.shoppingapp.domain.model.Product
+import com.example.shoppingapp.domain.model.Rates
 import com.google.gson.reflect.TypeToken
 
 @ProvidedTypeConverter
@@ -13,31 +14,34 @@ class Converters(
     fun fromDataJson(json: String): List<Product> {
         return jsonParser.fromJson<ArrayList<Product>>(
             json,
-            object : TypeToken<ArrayList<Product>>(){}.type
+            object : TypeToken<ArrayList<Product>>() {}.type
         ) ?: emptyList()
     }
 
-//    @TypeConverter
-//    fun fromImageJson(json: String): List<Image> {
-//        return jsonParser.fromJson<ArrayList<Image>>(
-//            json,
-//            object : TypeToken<ArrayList<Image>>(){}.type
-//        ) ?: emptyList()
-//    }
 
     @TypeConverter
-    fun toDataJson (data: List<Product>) : String {
+    fun toDataJson(data: List<Product>): String {
         return jsonParser.toJson(
             data,
-            object : TypeToken<ArrayList<Product>>(){}.type
+            object : TypeToken<ArrayList<Product>>() {}.type
         ) ?: "[]"
     }
 
-//    @TypeConverter
-//    fun toImageJson (data: List<Image>) : String {
-//        return jsonParser.toJson(
-//            data,
-//            object : TypeToken<ArrayList<Image>>(){}.type
-//        ) ?: "[]"
-//    }
+    // TypeConverter for `Rates`
+    @TypeConverter
+    fun fromRatesJson(json: String): Rates? {
+        return jsonParser.fromJson(
+            json,
+            object : TypeToken<Rates>() {}.type
+        )
+    }
+
+    @TypeConverter
+    fun toRatesJson(rates: Rates?): String {
+        return jsonParser.toJson(
+            rates,
+            object : TypeToken<Rates>() {}.type
+        ) ?: ""
+    }
 }
+
