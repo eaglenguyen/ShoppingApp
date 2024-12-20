@@ -55,19 +55,30 @@ dependencies {
     implementation(libs.androidx.material3)
 
     implementation(libs.androidx.lifecycle.viewmodel.compose)
-
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation)
     implementation(libs.navigation.compose)
-    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.androidx.databinding.adapters)
     ksp(libs.hilt.compiler)
+
+    implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.compose.animation)
+    implementation(libs.retrofit.converter.gson)
+
 
     //Retrofit
     implementation(libs.retrofit)
 
     //Moshi
     implementation(libs.moshi)
+
+    //Room
+    implementation(libs.room.runtime)
+    ksp(libs.room.compiler)
+    implementation(libs.room.ktx)
+
+    implementation(libs.coil.compose)
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

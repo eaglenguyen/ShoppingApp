@@ -1,4 +1,4 @@
-package com.example.shoppingapp.data.remote.dto
+package com.example.shoppingapp.domain.model
 
 data class Product(
     val id: Int,
@@ -6,5 +6,6 @@ data class Product(
     val price: String,
     val category: String,
     val description: String,
-    val image: String
+    val image: String,
+    val rating: Rates
 )

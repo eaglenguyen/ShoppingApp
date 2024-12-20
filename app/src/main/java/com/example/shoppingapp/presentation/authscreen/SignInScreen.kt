@@ -49,11 +49,7 @@ fun SignInScreen(
                     onClickToHome()
                 }
                 is AuthResult.Unauthorized -> {
-                    Toast.makeText(
-                        context,
-                        "You are not authorized",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    Unit
                 }
                 is AuthResult.UnknownError -> {
                     Toast.makeText(
@@ -87,7 +83,7 @@ fun SignInScreen(
             )
         },
 
-        content = { it
+        content = { paddingValues -> paddingValues
 
             Column(
                 modifier = Modifier

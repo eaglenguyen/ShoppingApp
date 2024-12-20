@@ -39,6 +39,7 @@ class AuthViewModel @Inject constructor(
             is AuthUiEvent.SignUpEmailChanged -> { state = state.copy(signUpEmail = event.value) }
             is AuthUiEvent.SignUpNameChanged -> { state = state.copy(signUpName = event.value) }
             is AuthUiEvent.SignUpPasswordChanged -> { state = state.copy(signUpPassword = event.value) }
+            AuthUiEvent.SignOut -> signOut()
         }
     }
 
@@ -60,10 +61,20 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch {
             state = state.copy(isLoading = true)
             val result = repository.signIn(
-                name = null,
-                email = state.signUpEmail,
-                password = state.signUpPassword
+                // sign in dont require name
+                name = state.signUpName,
+                email = state.signInEmail,
+                password = state.signInPassword
             )
+            resultChannel.send(result)
+            state = state.copy(isLoading = false)
+        }
+    }
+
+    private fun signOut() {
+        viewModelScope.launch {
+            state = state.copy(isLoading = true)
+            val result = repository.signOut()
             resultChannel.send(result)
             state = state.copy(isLoading = false)
         }
@@ -77,5 +88,10 @@ class AuthViewModel @Inject constructor(
             state = state.copy(isLoading = false)
         }
     }
+
+    fun showDialogState() {
+        state = state.copy(showDialog = !state.showDialog)
+    }
+
 
 }

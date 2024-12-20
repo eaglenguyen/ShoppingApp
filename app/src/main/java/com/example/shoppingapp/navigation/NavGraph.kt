@@ -38,7 +38,11 @@ fun NavGraph (
            }
 
            composable<HomeScreen> {
-               HomeScreen()
+               HomeScreen(
+                   onClickToSignUpScreen = {
+                       navController.navigate(SignUpScreen)
+               }
+               )
            }
        }
 

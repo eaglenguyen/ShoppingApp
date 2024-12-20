@@ -1,6 +1,7 @@
 package com.example.shoppingapp.auth
 
 import android.content.SharedPreferences
+import android.util.Log
 import retrofit2.HttpException
 
 class AuthRepositoryImpl(
@@ -42,12 +43,23 @@ class AuthRepositoryImpl(
                 .apply()
             AuthResult.Authorized()
         } catch (e: HttpException) {
+            Log.e("AuthRepository", "signIn error: ${e.message()}", e)
             if (e.code() == 401) {
                 AuthResult.Unauthorized()
             } else {
+                Log.e("AuthRepository", "Unexpected Exception: ${e.message}", e)
                 AuthResult.UnknownError()
             }
         }    }
+
+    override suspend fun signOut(): AuthResult<Unit> {
+        return try {
+            prefs.edit().remove("jwt").apply()
+            AuthResult.Unauthorized()
+        } catch (e: HttpException){
+            AuthResult.UnknownError()
+        }
+    }
 
     override suspend fun authenticate(): AuthResult<Unit> {
         return try {

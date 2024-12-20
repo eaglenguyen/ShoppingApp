@@ -7,4 +7,5 @@ data class AuthState(
     val signUpPassword: String = "",
     val signInEmail: String = "",
     val signInPassword: String = "",
+    val showDialog: Boolean = false
 )

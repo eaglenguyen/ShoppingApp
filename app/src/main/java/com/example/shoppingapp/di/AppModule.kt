@@ -3,14 +3,24 @@ package com.example.shoppingapp.di
 import android.app.Application
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
+import androidx.room.Room
 import com.example.shoppingapp.auth.AuthApi
 import com.example.shoppingapp.auth.AuthRepository
 import com.example.shoppingapp.auth.AuthRepositoryImpl
+import com.example.shoppingapp.data.remote.StoreApi
+import com.example.shoppingapp.data.remote.StoreApi.Companion.BASE_URL
+import com.example.shoppingapp.data.remote.local.ProductsDatabase
+import com.example.shoppingapp.data.repository.ProductsRepositoryImpl
+import com.example.shoppingapp.data.util.Converters
+import com.example.shoppingapp.data.util.GsonParser
+import com.example.shoppingapp.domain.repository.ProductsRepository
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.create
 import javax.inject.Singleton
@@ -34,11 +44,39 @@ object AppModule {
             .create()
     }
 
+
     @Provides
     @Singleton
     fun provideSharedPref(app: Application): SharedPreferences {
         return app.getSharedPreferences("prefs", MODE_PRIVATE)
     }
+
+
+    @Provides
+    @Singleton
+    fun provideStoreApi(): StoreApi {
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(StoreApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDatabase(app:Application): ProductsDatabase {
+        return Room.databaseBuilder(
+            app,
+            ProductsDatabase::class.java,
+            "product_db"
+        ).addTypeConverter(Converters(GsonParser(Gson())))
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideProductsRepository(api: StoreApi, db: ProductsDatabase): ProductsRepository =  ProductsRepositoryImpl(api,db.productsDao)
 
 
 }
