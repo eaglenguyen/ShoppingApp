@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.room.Index
 import com.example.shoppingapp.domain.repository.ProductsRepository
 import com.example.shoppingapp.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -33,11 +34,17 @@ class HomeViewModel @Inject constructor(
         state = state.copy(showDialog = !state.showDialog)
     }
 
+    fun changeItemIndex(index: Int) {
+        state = state.copy(selectedItemIndex = index)
+    }
+
+
     fun onEvent(event: HomeScreenUiEvent) {
         when(event) {
             HomeScreenUiEvent.SignOut -> signOut()
         }
     }
+
     private fun signOut() {
         viewModelScope.launch {
             state = state.copy(isLoading = true)

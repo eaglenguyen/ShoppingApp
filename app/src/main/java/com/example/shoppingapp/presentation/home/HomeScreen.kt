@@ -1,15 +1,28 @@
 package com.example.shoppingapp.presentation.home
 
 import android.widget.Toast
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -20,6 +33,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.shoppingapp.util.Resource
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -59,48 +73,59 @@ fun HomeScreen(
             }
         }
     }
-    Box(
-        modifier = Modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = "Home",
-            style = MaterialTheme.typography.bodyMedium
-        )
-        Button( onClick = { viewModel.showDialogState() }
-                ,modifier = Modifier
-                .fillMaxWidth()
-            .height(56.dp)
-            ,
-            shape = CircleShape
-        )  {
-            if(state.showDialog) {
-                AlertDialog(
-                    onDismissRequest = { viewModel.showDialogState() },
-                    title = {
-                        Text(text = "Sign Out")
-                    },
-                    text = {
-                        Text("Are you sure you want ot sign out?")
-                    },
-                    confirmButton = {
-                        TextButton(onClick = {
-                            viewModel.onEvent(HomeScreenUiEvent.SignOut)
-                            viewModel.showDialogState()
-                        }) {
-                            Text("Confirm")
+
+
+
+    Scaffold(
+        bottomBar = {
+            NavigationBar {
+                items.forEachIndexed { index, item ->
+                    NavigationBarItem(
+                        selected = state.selectedItemIndex == index,
+                        onClick = { viewModel.changeItemIndex(index) },
+                        label = {
+                            Text(text = item.title)
+                        },
+                        icon = {
+                            Icon(
+                                imageVector = if (index == state.selectedItemIndex) {
+                                    item.selectedItem
+                                } else item.unselectedIcon,
+                                contentDescription = item.title
+                            )
+
                         }
-                    },
-                    dismissButton = {
-                        TextButton(onClick = {viewModel.showDialogState()}) {
-                            Text("Cancel")
-                        }
-                    }
-                )
+                    )
+                }
+
             }
         }
-        Text(text = "Sign Out", style = MaterialTheme.typography.bodyMedium)
+    ) { scaffpadding ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(scaffpadding),
+            contentAlignment = Alignment.Center,
+        ) {
+            Column(modifier = Modifier.fillMaxSize()) {
+                LazyVerticalStaggeredGrid(
+                    columns = StaggeredGridCells.Fixed(2),
+                    verticalItemSpacing = 4.dp,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    modifier = Modifier.fillMaxSize()
 
+                ) {
+                    items(state.productList.size) { i ->
+                        val listOfProducts = state.productList[i]
+                        ProductItem(
+                            listOfProducts.title,
+                            listOfProducts.price,
+                            listOfProducts.image
+                        )
+                    }
+                }
+            }
+        }
     }
+
 }
