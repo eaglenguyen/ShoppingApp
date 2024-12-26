@@ -108,7 +108,7 @@ fun HomeScreen(
                         val listOfProducts = state.productList[i]
                         ProductItem(
                             listOfProducts.title,
-                            listOfProducts.price,
+                            "$${listOfProducts.price}",
                             listOfProducts.image
                         )
                     }
