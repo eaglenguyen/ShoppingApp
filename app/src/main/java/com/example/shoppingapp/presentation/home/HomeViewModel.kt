@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.Index
 import com.example.shoppingapp.domain.repository.ProductsRepository
 import com.example.shoppingapp.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,6 +29,10 @@ class HomeViewModel @Inject constructor(
         showProducts()
     }
 
+    fun refreshProducts() {
+        showProducts()
+    }
+
     fun showDialogState() {
         state = state.copy(showDialog = !state.showDialog)
     }
@@ -37,6 +40,8 @@ class HomeViewModel @Inject constructor(
     fun changeItemIndex(index: Int) {
         state = state.copy(selectedItemIndex = index)
     }
+
+
 
 
     fun onEvent(event: HomeScreenUiEvent) {
@@ -54,11 +59,12 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-        private fun showProducts() {
+    private fun showProducts() {
         viewModelScope.launch {
             repository.getProductsList().collect {
                 when(it) {
                     is Resource.Loading -> {
+                        state = state.copy(isRefreshing = true)
                         state = state.copy(isLoading = true)
                     }
 
@@ -66,7 +72,11 @@ class HomeViewModel @Inject constructor(
                         state = state.copy(isLoading = false)
                     }
                     is Resource.Success -> {
-                        state = state.copy(isLoading = false, productList = it.data!!)
+                        state = state.copy(
+                            isRefreshing = false,
+                            isLoading = false,
+                            productList = it.data!!
+                        )
                     }
 
                     is Resource.Unauthorized -> {

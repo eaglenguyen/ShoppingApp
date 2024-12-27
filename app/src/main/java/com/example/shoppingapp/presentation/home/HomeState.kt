@@ -6,6 +6,7 @@ data class HomeState (
     val productList: List<Product> = emptyList(),
     val isLoading: Boolean = false,
     val showDialog: Boolean = false,
-    val selectedItemIndex: Int = 0
+    val selectedItemIndex: Int = 0,
+    val isRefreshing: Boolean = false
 
 )
