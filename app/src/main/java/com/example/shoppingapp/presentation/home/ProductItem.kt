@@ -1,10 +1,11 @@
 package com.example.shoppingapp.presentation.home
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -19,11 +20,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.shoppingapp.ui.theme.ibmFontFamily
 
 @Composable
 fun ProductItem(
@@ -38,16 +43,22 @@ fun ProductItem(
         shape = RoundedCornerShape(8.dp),
     ) {
         Column(
-            modifier = Modifier.padding(5.dp),
+            modifier = Modifier.padding(bottom = 5.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             // Image
-            Box(Modifier.fillMaxWidth()) {
+            Box(
+                Modifier.fillMaxWidth()
+                    .height(180.dp)
+
+            ) {
                 AsyncImage(
                     model = image,
                     contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxWidth().wrapContentHeight()
+                    contentScale = ContentScale.FillBounds,
+                    modifier = Modifier.fillMaxWidth()
+                        .wrapContentHeight()
+                        .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
                 )
                 IconButton(
                     onClick = { TODO() },
@@ -64,13 +75,23 @@ fun ProductItem(
                 text = title,
                 style = MaterialTheme.typography.bodyMedium,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
+                fontFamily = ibmFontFamily,
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp,
+                color = Color.Black,
+                letterSpacing = .8.sp
             )
 
             Text(
                 text = price,
-                style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.primary)
-            )
+                style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.primary),
+                color = Color.Blue,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.W500,
+
+
+                )
 
 
         }

@@ -3,6 +3,7 @@ package com.example.shoppingapp.presentation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
@@ -36,10 +37,11 @@ fun <T> PullToRefreshLazyColumn(
         LazyVerticalStaggeredGrid(
             state = lazyGridState,
             columns = StaggeredGridCells.Fixed(2),
-            verticalItemSpacing = 4.dp,
+            verticalItemSpacing = 16.dp,
             modifier = Modifier
-                .fillMaxSize(),
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
+                .fillMaxSize()
+                .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(30.dp),
         ) {
             items(items) {
                 content(it)

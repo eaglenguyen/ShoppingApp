@@ -1,5 +1,6 @@
 package com.example.shoppingapp.navigation
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -8,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.shoppingapp.presentation.authscreen.SignInScreen
 import com.example.shoppingapp.presentation.authscreen.SignUpScreen
 import com.example.shoppingapp.presentation.home.HomeScreen
+import com.example.shoppingapp.presentation.profile.ProfileScreen
 
 @Composable
 fun NavGraph (
@@ -37,11 +39,23 @@ fun NavGraph (
                )
            }
 
+
+
            composable<HomeScreen> {
                HomeScreen(
-                   onClickToSignUpScreen = {
+                   onClickToSignUp = {
                        navController.navigate(SignUpScreen)
-               }
+
+                   }
+               )
+           }
+
+           composable<ProfileScreen> {
+               ProfileScreen(
+                   scaffFoldPadding = PaddingValues(),
+                   onClickToSignUp = {
+                       navController.navigate(SignUpScreen)
+                   }
                )
            }
        }
