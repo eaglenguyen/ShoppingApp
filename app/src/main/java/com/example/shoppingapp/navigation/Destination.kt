@@ -14,3 +14,5 @@ object HomeScreen
 @Serializable
 object ProfileScreen
 
+@Serializable
+object SettingsScreen

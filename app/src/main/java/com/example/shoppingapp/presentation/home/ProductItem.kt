@@ -1,5 +1,6 @@
 package com.example.shoppingapp.presentation.home
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,21 +35,22 @@ import com.example.shoppingapp.ui.theme.ibmFontFamily
 fun ProductItem(
     title: String,
     price: String,
-    image: String
+    image: String,
+    modifier: Modifier = Modifier
+
 ) {
     Card(
-        modifier = Modifier
-            .width(160.dp)
-            ,
+        modifier = modifier
+            .width(160.dp),
         shape = RoundedCornerShape(8.dp),
     ) {
         Column(
-            modifier = Modifier.padding(bottom = 5.dp),
+            modifier = modifier.padding(bottom = 5.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             // Image
             Box(
-                Modifier.fillMaxWidth()
+                modifier.width(180.dp)
                     .height(180.dp)
 
             ) {
@@ -56,13 +58,13 @@ fun ProductItem(
                     model = image,
                     contentDescription = null,
                     contentScale = ContentScale.FillBounds,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = modifier.fillMaxWidth()
                         .wrapContentHeight()
                         .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
                 )
                 IconButton(
-                    onClick = { TODO() },
-                    modifier = Modifier.align(Alignment.TopEnd)
+                    onClick = {  },
+                    modifier = modifier.align(Alignment.TopEnd)
                 ) {
                 Icon(
                     imageVector = Icons.Default.FavoriteBorder,

@@ -10,6 +10,7 @@ import com.example.shoppingapp.presentation.authscreen.SignInScreen
 import com.example.shoppingapp.presentation.authscreen.SignUpScreen
 import com.example.shoppingapp.presentation.home.HomeScreen
 import com.example.shoppingapp.presentation.profile.ProfileScreen
+import com.example.shoppingapp.presentation.profile.subprofile.settings.SettingsScreen
 
 @Composable
 fun NavGraph (
@@ -45,7 +46,9 @@ fun NavGraph (
                HomeScreen(
                    onClickToSignUp = {
                        navController.navigate(SignUpScreen)
-
+                   },
+                   onClickToSettings = {
+                       navController.navigate(SettingsScreen)
                    }
                )
            }
@@ -55,9 +58,21 @@ fun NavGraph (
                    scaffFoldPadding = PaddingValues(),
                    onClickToSignUp = {
                        navController.navigate(SignUpScreen)
+                   },
+                   onClickToSettings = {
+                       navController.navigate(SettingsScreen)
                    }
                )
            }
+
+           composable<SettingsScreen> {
+               SettingsScreen(
+                   onClickPrevious = {
+                       navController.navigateUp()
+                   }
+               )
+           }
+
        }
 
 }

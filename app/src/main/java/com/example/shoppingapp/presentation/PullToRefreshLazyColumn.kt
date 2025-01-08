@@ -1,5 +1,6 @@
 package com.example.shoppingapp.presentation
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -43,8 +44,8 @@ fun <T> PullToRefreshLazyColumn(
                 .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(30.dp),
         ) {
-            items(items) {
-                content(it)
+            items(items) { item ->
+                content(item)
             }
         }
 

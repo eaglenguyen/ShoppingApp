@@ -48,6 +48,7 @@ import com.example.shoppingapp.util.Resource
 fun ProfileScreen (
     scaffFoldPadding: PaddingValues,
     onClickToSignUp: () -> Unit,
+    onClickToSettings: () -> Unit,
     viewModel: ProfileViewModel = hiltViewModel()
 ) {
 
@@ -55,6 +56,7 @@ fun ProfileScreen (
     val context = LocalContext.current
 
 
+    // Signout auth
     LaunchedEffect(viewModel, context) {
         viewModel.profileResult.collect { result ->
             when(result) {
@@ -135,7 +137,15 @@ fun ProfileScreen (
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp)
-                    .clickable { /* Handle click */ }
+                    .clickable {
+                        when(title) {
+                            "Profile" -> Toast.makeText(context, "1", Toast.LENGTH_LONG).show()
+                            "Setting" -> onClickToSettings()
+                            "Contact" -> Toast.makeText(context, "3", Toast.LENGTH_LONG).show()
+                            "Share App" -> Toast.makeText(context, "4", Toast.LENGTH_LONG).show()
+                            "Help" -> Toast.makeText(context, "5", Toast.LENGTH_LONG).show()
+                        }
+                    }
                     .background(Color(0xFFF5F5F5), shape = RoundedCornerShape(8.dp))
                     .padding(horizontal = 16.dp, vertical = 12.dp),
                 verticalAlignment = Alignment.CenterVertically
@@ -151,7 +161,7 @@ fun ProfileScreen (
                     text = title,
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color.Black,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f) // fills in space for rightarrow icon
                 )
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
@@ -169,7 +179,7 @@ fun ProfileScreen (
             color = Color.Red,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
-                .padding(vertical = 16.dp)
+                .padding(vertical = 50.dp)
                 .clickable { viewModel.showDialogState() },
             style = MaterialTheme.typography.bodyLarge
         )

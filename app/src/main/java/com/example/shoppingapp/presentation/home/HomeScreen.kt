@@ -1,8 +1,10 @@
 package com.example.shoppingapp.presentation.home
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -23,7 +25,8 @@ import com.example.shoppingapp.presentation.profile.ProfileScreen
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
-    onClickToSignUp: () -> Unit
+    onClickToSignUp: () -> Unit,
+    onClickToSettings: () -> Unit
 ) {
 
     val state = viewModel.state
@@ -82,10 +85,14 @@ fun HomeScreen(
                             items = state.productList,
                             content = { item ->
                                 ProductItem(
-                                    item.title,
-                                    "$${item.price}",
-                                    item.image
+                                    title = item.title,
+                                    price = "$${item.price}",
+                                    image = item.image,
+                                    modifier = Modifier.clickable {
+
+                                    }
                                 )
+
                             },
                             isRefreshing = state.isRefreshing,
                             onRefresh = { viewModel.refreshProducts() },
@@ -94,7 +101,7 @@ fun HomeScreen(
                     }
                 }
             }
-            3 -> { ProfileScreen(scaffpadding, onClickToSignUp) }
+            3 -> { ProfileScreen(scaffpadding, onClickToSignUp, onClickToSettings) }
         }
 
     }
