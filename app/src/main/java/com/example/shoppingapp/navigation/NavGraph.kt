@@ -6,9 +6,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.example.shoppingapp.presentation.authscreen.SignInScreen
 import com.example.shoppingapp.presentation.authscreen.SignUpScreen
 import com.example.shoppingapp.presentation.home.HomeScreen
+import com.example.shoppingapp.presentation.product_info.ProductInfoScreen
 import com.example.shoppingapp.presentation.profile.ProfileScreen
 import com.example.shoppingapp.presentation.profile.subprofile.settings.SettingsScreen
 
@@ -42,14 +44,18 @@ fun NavGraph (
 
 
 
-           composable<HomeScreen> {
+           composable<HomeScreen> { backStackEntry ->
                HomeScreen(
                    onClickToSignUp = {
                        navController.navigate(SignUpScreen)
                    },
                    onClickToSettings = {
                        navController.navigate(SettingsScreen)
+                   },
+                   onClickToDetails = {
+                       navController.navigate(DetailScreen(it))
                    }
+
                )
            }
 
@@ -67,6 +73,15 @@ fun NavGraph (
 
            composable<SettingsScreen> {
                SettingsScreen(
+                   onClickPrevious = {
+                       navController.navigateUp()
+                   }
+               )
+           }
+
+           composable<DetailScreen> {
+               val positionId = it.toRoute<DetailScreen>()
+               ProductInfoScreen(id = positionId.id,
                    onClickPrevious = {
                        navController.navigateUp()
                    }

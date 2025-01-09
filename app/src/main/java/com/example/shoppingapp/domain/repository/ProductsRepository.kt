@@ -5,7 +5,13 @@ import com.example.shoppingapp.util.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface ProductsRepository {
+
     fun getProductsList(): Flow<Resource<List<Product>>>
+
+    suspend fun getProduct(
+        id: Int
+    ): Resource<Product>
+
     suspend fun signOut(): Resource<Unit>
 
 }

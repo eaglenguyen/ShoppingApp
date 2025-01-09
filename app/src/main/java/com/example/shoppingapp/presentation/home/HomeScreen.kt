@@ -26,7 +26,8 @@ import com.example.shoppingapp.presentation.profile.ProfileScreen
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     onClickToSignUp: () -> Unit,
-    onClickToSettings: () -> Unit
+    onClickToSettings: () -> Unit,
+    onClickToDetails: (Int) -> Unit
 ) {
 
     val state = viewModel.state
@@ -88,9 +89,7 @@ fun HomeScreen(
                                     title = item.title,
                                     price = "$${item.price}",
                                     image = item.image,
-                                    modifier = Modifier.clickable {
-
-                                    }
+                                    modifier = Modifier.clickable { onClickToDetails(item.id) }
                                 )
 
                             },

@@ -23,6 +23,14 @@ class ProductsRepositoryImpl @Inject constructor(
     override fun getProductsList(): Flow<Resource<List<Product>>> = flow {
         emit(Resource.Loading())
 
+        // Step 1: Emit cached data from Room immediately
+        val localCache = dao.getProducts()
+        if (localCache.isNotEmpty()) {
+            emit(Resource.Success(localCache.toProduct()))
+        } else {
+            emit(Resource.Error(message = "No cached data available"))
+        }
+
         try {
             val fetchApi = api.getProducts()
             dao.insert(fetchApi.toProductsEntity())
@@ -33,9 +41,26 @@ class ProductsRepositoryImpl @Inject constructor(
             emit(Resource.Error(message = "Could not reach server"))
         }
 
-        val localCache = dao.getProducts()
-        emit(Resource.Success(localCache.toProduct()))
+        val updatedCache = dao.getProducts()
+        emit(Resource.Success(updatedCache.toProduct()))
+
+
     }
+
+    override suspend fun getProduct(id: Int): Resource<Product> {
+        return try {
+            val result = api.getProduct(id)
+            Resource.Success(result)
+        }  catch (e: IOException) {
+            e.printStackTrace()
+            Resource.Error(message = "Couldn't load Product Details")
+        } catch (e: HttpException) {
+            e.printStackTrace()
+            Resource.Error(message = "Couldn't load Product Details")
+
+        }
+    }
+
 
     override suspend fun signOut(): Resource<Unit> {
         return try {

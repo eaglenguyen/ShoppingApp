@@ -16,3 +16,8 @@ object ProfileScreen
 
 @Serializable
 object SettingsScreen
+
+@Serializable
+data class DetailScreen(
+    val id: Int
+)
