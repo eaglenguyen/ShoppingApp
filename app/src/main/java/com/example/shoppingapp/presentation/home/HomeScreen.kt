@@ -11,17 +11,25 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.shoppingapp.navigation.CartScreen
 import com.example.shoppingapp.presentation.PullToRefreshLazyColumn
+import com.example.shoppingapp.presentation.cart.CartScreen
 import com.example.shoppingapp.presentation.profile.ProfileScreen
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
@@ -30,20 +38,25 @@ fun HomeScreen(
     onClickToDetails: (Int) -> Unit
 ) {
 
+
     val state = viewModel.state
 
 
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    if (state.selectedItemIndex == 0) {
-                        Text("Products")
-                    } else {
-                        Text("")
-                    }
-                }
-            )
+            if (state.selectedItemIndex == 1) {
+                OutlinedTextField(
+                    value = state.searchQuery,
+                    onValueChange = { viewModel.onEvent(HomeScreenUiEvent.OnSearchQueryChange(query = it)) },
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth()
+                        .testTag("search"),
+                    placeholder = { Text(text = "Search...") },
+                    maxLines = 1,
+                    singleLine = true
+                )
+            }
         },
         bottomBar = {
             NavigationBar {
@@ -72,7 +85,7 @@ fun HomeScreen(
         }
     ) { scaffpadding ->
         when(state.selectedItemIndex) {
-            0 -> {
+            0,1 -> {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -82,6 +95,7 @@ fun HomeScreen(
                     Column(
                         modifier = Modifier.fillMaxSize()
                     ) {
+
                         PullToRefreshLazyColumn(
                             items = state.productList,
                             content = { item ->
@@ -100,7 +114,16 @@ fun HomeScreen(
                     }
                 }
             }
+            2 -> {
+                CartScreen(
+                    onBackClick = { Unit },
+                    onDeleteItem ={ Unit },
+                    onQuantityChange = { Unit },
+                    onCheckoutClick = { Unit }
+                )
+            }
             3 -> { ProfileScreen(scaffpadding, onClickToSignUp, onClickToSettings) }
+
         }
 
     }

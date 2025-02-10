@@ -10,22 +10,7 @@ import com.google.gson.reflect.TypeToken
 class Converters(
     private val jsonParser: JsonParser
 ) {
-    @TypeConverter
-    fun fromDataJson(json: String): List<Product> {
-        return jsonParser.fromJson<ArrayList<Product>>(
-            json,
-            object : TypeToken<ArrayList<Product>>() {}.type
-        ) ?: emptyList()
-    }
 
-
-    @TypeConverter
-    fun toDataJson(data: List<Product>): String {
-        return jsonParser.toJson(
-            data,
-            object : TypeToken<ArrayList<Product>>() {}.type
-        ) ?: "[]"
-    }
 
     // TypeConverter for `Rates`
     @TypeConverter

@@ -20,8 +20,21 @@ class ProductsRepositoryImpl @Inject constructor(
     private val dao: ProductsDao,
     private val prefs: SharedPreferences
 ): ProductsRepository {
-    override fun getProductsList(): Flow<Resource<List<Product>>> = flow {
-        emit(Resource.Loading())
+
+
+    override fun getProductsList(
+        query: String
+    ): Flow<Resource<List<Product>>> = flow {
+
+        emit(Resource.Loading(true))
+        val searchProducts = dao.searchProductTitle(query)
+        emit(Resource.Success(searchProducts.toProduct()))
+
+        val isDbEmpty = searchProducts.isEmpty() && query.isBlank()
+        if (!isDbEmpty) {
+            emit(Resource.Loading(false))
+            return@flow
+        }
 
         // Step 1: Emit cached data from Room immediately
         val localCache = dao.getProducts()
@@ -60,6 +73,7 @@ class ProductsRepositoryImpl @Inject constructor(
 
         }
     }
+
 
 
     override suspend fun signOut(): Resource<Unit> {

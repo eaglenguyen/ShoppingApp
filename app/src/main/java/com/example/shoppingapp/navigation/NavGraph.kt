@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.shoppingapp.presentation.authscreen.SignInScreen
 import com.example.shoppingapp.presentation.authscreen.SignUpScreen
+import com.example.shoppingapp.presentation.cart.CartScreen
 import com.example.shoppingapp.presentation.home.HomeScreen
 import com.example.shoppingapp.presentation.product_info.ProductInfoScreen
 import com.example.shoppingapp.presentation.profile.ProfileScreen
@@ -87,6 +88,16 @@ fun NavGraph (
                    }
                )
            }
+
+           composable<CartScreen> {
+               CartScreen(
+                   onBackClick = { Unit },
+                   onDeleteItem = { Unit },
+                   onQuantityChange = { Unit },
+                   onCheckoutClick = { Unit }
+               )
+           }
+
 
        }
 

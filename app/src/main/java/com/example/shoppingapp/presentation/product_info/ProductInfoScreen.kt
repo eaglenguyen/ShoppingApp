@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -28,15 +30,22 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import com.example.shoppingapp.presentation.cart.CartItem
+import com.example.shoppingapp.presentation.cart.CartViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,8 +53,12 @@ import coil.compose.AsyncImage
 fun ProductInfoScreen(
     id: Int,
     onClickPrevious: () -> Unit,
-    viewModel: ProductInfoViewModel = hiltViewModel()
+    viewModel: ProductInfoViewModel = hiltViewModel(),
 ) {
+
+    var maxline by remember {
+        mutableStateOf(false)
+    }
 
     val state = viewModel.state
     if (state.error == null) {
@@ -133,7 +146,7 @@ fun ProductInfoScreen(
                                 tint = Color(0xFFFFD700)
                             )
                             Text(
-                                text = "4.5 (430 Reviews)",
+                                text = "${product.rating.rate} (${product.rating.count} reviews)",
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = Color.Gray,
                             )
@@ -158,8 +171,15 @@ fun ProductInfoScreen(
                         )
                         Text(
                             text = product.description,
+                            maxLines =
+                            when(maxline) {
+                                false -> 10
+                                else -> Int.MAX_VALUE
+                            },
+                            overflow = TextOverflow.Ellipsis,
                             style = MaterialTheme.typography.bodyMedium,
-                            color = Color.Gray
+                            color = Color.Gray,
+                            modifier = Modifier.clickable { maxline = !maxline }
                         )
 
                         Spacer(modifier = Modifier.height(16.dp))
@@ -186,7 +206,7 @@ fun ProductInfoScreen(
                                         .size(50.dp)
                                         .border(1.dp, Color.Gray, RoundedCornerShape(4.dp))
                                         .clickable { /* Handle size selection */ },
-                                    contentAlignment = Alignment.Center
+                                    contentAlignment = Center
                                 ) {
                                     Text(text = size)
                                 }
@@ -197,13 +217,29 @@ fun ProductInfoScreen(
 
                         // Buy Now Button
                         Button(
-                            onClick = { /* Handle buy now */ },
+                            onClick = { viewModel.addToCart(product) },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(vertical = 16.dp),
                             shape = RoundedCornerShape(24.dp)
                         ) {
                             Text(text = "ADD TO CART")
+                        }
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            items(state.cartList) { item ->
+                                if (item != null) {
+                                    CartItem(
+                                        item,
+                                        onDelete = { viewModel.removeFromCart(product) },
+                                        onQuantityChange = { Unit }
+                                    )
+                                }
+                            }
                         }
                     }
                 }

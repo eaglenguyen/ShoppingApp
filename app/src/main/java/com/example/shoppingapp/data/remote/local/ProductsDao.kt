@@ -13,4 +13,17 @@ interface ProductsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(productsEntity: List<ProductsEntity>)
+
+    @Query(
+        """
+            SELECT *
+            FROM productsentity
+            WHERE LOWER (title) LIKE '%' || LOWER (:query) || '%'
+        """
+    )
+    suspend fun searchProductTitle(query: String): List<ProductsEntity>
+
+
+
+
 }

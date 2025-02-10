@@ -8,7 +8,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.shoppingapp.domain.repository.ProductsRepository
 import com.example.shoppingapp.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,6 +22,7 @@ class HomeViewModel @Inject constructor(
 
     var state by mutableStateOf(HomeState())
 
+    private var searchJob: Job? = null
 
     private val resultChannel = Channel<Resource<Unit>>()
     val homeResult = resultChannel.receiveAsFlow()
@@ -30,12 +33,10 @@ class HomeViewModel @Inject constructor(
     }
 
     fun refreshProducts() {
+        state = state.copy(isRefreshing = true)
         showProducts()
     }
 
-    fun showDialogState() {
-        state = state.copy(showDialog = !state.showDialog)
-    }
 
     fun changeItemIndex(index: Int) {
         state = state.copy(selectedItemIndex = index)
@@ -46,7 +47,16 @@ class HomeViewModel @Inject constructor(
 
     fun onEvent(event: HomeScreenUiEvent) {
         when(event) {
-            HomeScreenUiEvent.SignOut -> signOut()
+            is HomeScreenUiEvent.SignOut -> signOut()
+            is HomeScreenUiEvent.OnSearchQueryChange -> {
+                state = state.copy(searchQuery = event.query,
+                    isRefreshing = false)
+                searchJob?.cancel()
+                searchJob = viewModelScope.launch() {
+                    delay(500L)
+                    showProducts()
+                }
+            }
         }
     }
 
@@ -59,12 +69,13 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun showProducts() {
+    private fun showProducts(
+        query: String = state.searchQuery.lowercase(),
+    ) {
         viewModelScope.launch {
-            repository.getProductsList().collect {
+            repository.getProductsList(query).collect {
                 when(it) {
                     is Resource.Loading -> {
-                        state = state.copy(isRefreshing = true)
                         state = state.copy(isLoading = true)
                     }
 
