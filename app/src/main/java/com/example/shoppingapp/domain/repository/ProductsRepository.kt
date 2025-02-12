@@ -1,6 +1,5 @@
 package com.example.shoppingapp.domain.repository
 
-import androidx.room.Query
 import com.example.shoppingapp.domain.model.Product
 import com.example.shoppingapp.util.Resource
 import kotlinx.coroutines.flow.Flow

@@ -8,7 +8,7 @@ import androidx.room.Query
 
 @Dao
 interface ProductsDao {
-    @Query("SELECT * from productsentity")
+    @Query("SELECT * from product")
     suspend fun getProducts(): List<ProductsEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -17,7 +17,7 @@ interface ProductsDao {
     @Query(
         """
             SELECT *
-            FROM productsentity
+            FROM product
             WHERE LOWER (title) LIKE '%' || LOWER (:query) || '%'
         """
     )

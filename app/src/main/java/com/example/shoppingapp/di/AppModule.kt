@@ -10,6 +10,8 @@ import com.example.shoppingapp.auth.AuthRepositoryImpl
 import com.example.shoppingapp.data.remote.StoreApi
 import com.example.shoppingapp.data.remote.StoreApi.Companion.BASE_URL
 import com.example.shoppingapp.data.remote.local.ProductsDatabase
+import com.example.shoppingapp.data.remote.localcart.CartDao
+import com.example.shoppingapp.data.repository.CartRepository
 import com.example.shoppingapp.data.repository.ProductsRepositoryImpl
 import com.example.shoppingapp.data.util.Converters
 import com.example.shoppingapp.data.util.GsonParser
@@ -28,6 +30,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 object AppModule {
+
     @Provides
     fun providesAuthRepository(api: AuthApi, prefs: SharedPreferences): AuthRepository {
         return AuthRepositoryImpl(api, prefs)
@@ -73,6 +76,14 @@ object AppModule {
             .fallbackToDestructiveMigration()
             .build()
     }
+
+
+    @Provides
+    fun provideDao(db: ProductsDatabase) = db.cartDao
+
+    @Provides
+    @Singleton
+    fun provideCartRepository(cartDao: CartDao) : CartRepository = CartRepository(cartDao)
 
     @Provides
     @Singleton

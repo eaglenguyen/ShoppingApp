@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.shoppingapp.domain.model.Rates
 
-@Entity
+@Entity (tableName = "product")
 data class ProductsEntity(
     @PrimaryKey val id: Int,
     val title: String,

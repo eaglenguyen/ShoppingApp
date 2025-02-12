@@ -45,7 +45,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.shoppingapp.presentation.cart.CartItem
-import com.example.shoppingapp.presentation.cart.CartViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -232,13 +231,11 @@ fun ProductInfoScreen(
                             modifier = Modifier.fillMaxSize()
                         ) {
                             items(state.cartList) { item ->
-                                if (item != null) {
-                                    CartItem(
-                                        item,
-                                        onDelete = { viewModel.removeFromCart(product) },
-                                        onQuantityChange = { Unit }
-                                    )
-                                }
+                                CartItem(
+                                    item,
+                                    onDelete = { viewModel.removeFromCart(product) },
+                                    onQuantityChange = { Unit }
+                                )
                             }
                         }
                     }
