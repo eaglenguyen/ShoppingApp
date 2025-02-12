@@ -16,6 +16,10 @@ interface CartDao {
     @Delete
     suspend fun delete(cart: Cart)
 
+    @Query("DELETE FROM cart WHERE id IN (SELECT id FROM cart LIMIT 1 OFFSET :position)")
+    suspend fun deleteId(position: Int)
+
+
     @Query("SELECT * from cart")
     fun getCart(): Flow<List<Cart>>
 

@@ -1,14 +1,12 @@
 package com.example.shoppingapp.presentation.cart
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -30,17 +28,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.shoppingapp.presentation.product_info.ProductInfoViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CartScreen(
     onBackClick: () -> Unit,
-    onDeleteItem: () -> Unit,
-    onQuantityChange: () -> Unit,
     onCheckoutClick: () -> Unit,
-    cartViewModel: CartViewModel = hiltViewModel()
+    viewModel: ProductInfoViewModel = hiltViewModel()
 ) {
 
+    val state = viewModel.state
 
     Scaffold(
         topBar = {
@@ -48,7 +46,10 @@ fun CartScreen(
                 title = { Text("Cart", fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back"
+                        )
                     }
                 },
                 actions = {
@@ -79,24 +80,20 @@ fun CartScreen(
             }
         }
     ) { padding ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .background(Color(0xFFF8F8F8)), // Light gray background
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            contentPadding = PaddingValues(16.dp)
-        ) {
-            items(1) { cart ->
-                CartItem(
-                    TODO(),
-                    onDelete = { Unit },
-                    onQuantityChange = { Unit }
-                )
-
+            Column(modifier = Modifier.padding(padding)) {
+                if (state.cartList.isEmpty()) {
+                    Text("Your cart is currently empty", modifier = Modifier.padding(16.dp))
+                } else {
+                    LazyColumn {
+                        itemsIndexed(state.cartList) { index, item ->
+                            CartItem(
+                                item = item,
+                                onDelete = { viewModel.removeViaId(index) },
+                                onQuantityChange = { /* Handle quantity change */ }
+                            )
+                        }
+                    }
+                }
             }
-
-
         }
     }
-}

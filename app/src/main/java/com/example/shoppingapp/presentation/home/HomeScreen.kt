@@ -117,8 +117,6 @@ fun HomeScreen(
             2 -> {
                 CartScreen(
                     onBackClick = { Unit },
-                    onDeleteItem ={ Unit },
-                    onQuantityChange = { Unit },
                     onCheckoutClick = { Unit }
                 )
             }

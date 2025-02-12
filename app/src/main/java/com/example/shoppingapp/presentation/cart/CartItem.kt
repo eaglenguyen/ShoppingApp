@@ -24,7 +24,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.shoppingapp.R
 import com.example.shoppingapp.data.remote.localcart.Cart
+import io.github.composegears.valkyrie.BaselineRemoveCircle24
 
 @Composable
 fun CartItem(
@@ -60,7 +62,7 @@ fun CartItem(
             ) {
                 IconButton(onClick = {  }) {
                     Icon(
-                        imageVector = Icons.Default.Clear,
+                        imageVector = BaselineRemoveCircle24,
                         contentDescription = "Decrease",
                         tint = Color.Gray
                     )
@@ -74,7 +76,7 @@ fun CartItem(
                 )
                 IconButton(onClick = { }) {
                     Icon(
-                        imageVector = Icons.Default.AddCircle,
+                        imageVector = Icons.Filled.AddCircle,
                         contentDescription = "Increase",
                         tint = Color(0xFF6C4FF7)
                     )

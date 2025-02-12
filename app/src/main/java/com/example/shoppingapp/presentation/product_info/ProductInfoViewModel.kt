@@ -82,4 +82,12 @@ class ProductInfoViewModel @Inject constructor(
         }
     }
 
+    fun removeViaId(position: Int) {
+        viewModelScope.launch {
+            cartRepository.removeViaId(position)
+        }
+    }
+
+
+
 }

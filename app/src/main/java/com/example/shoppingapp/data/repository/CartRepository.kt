@@ -30,4 +30,8 @@ class CartRepository @Inject constructor(
         cartDao.delete(cartItem)
     }
 
+    suspend fun removeViaId(position: Int) {
+        cartDao.deleteId(position)
+    }
+
 }
