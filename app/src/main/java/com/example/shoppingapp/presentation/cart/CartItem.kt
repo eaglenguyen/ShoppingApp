@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -24,7 +23,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.shoppingapp.R
 import com.example.shoppingapp.data.remote.localcart.Cart
 import io.github.composegears.valkyrie.BaselineRemoveCircle24
 
@@ -32,7 +30,8 @@ import io.github.composegears.valkyrie.BaselineRemoveCircle24
 fun CartItem(
     item: Cart,
     onDelete: () -> Unit,
-    onQuantityChange: () -> Unit
+    removeQuantity: () -> Unit,
+    addQuantity: () -> Unit
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -60,7 +59,7 @@ fun CartItem(
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                IconButton(onClick = {  }) {
+                IconButton(onClick = { removeQuantity() }) {
                     Icon(
                         imageVector = BaselineRemoveCircle24,
                         contentDescription = "Decrease",
@@ -68,13 +67,13 @@ fun CartItem(
                     )
                 }
                 Text(
-                    text = "0",
+                    text = "${item.quantity}",
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
                     modifier = Modifier.width(32.dp),
                     textAlign = TextAlign.Center
                 )
-                IconButton(onClick = { }) {
+                IconButton(onClick = { addQuantity() }) {
                     Icon(
                         imageVector = Icons.Filled.AddCircle,
                         contentDescription = "Increase",

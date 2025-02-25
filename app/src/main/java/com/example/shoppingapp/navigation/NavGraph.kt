@@ -6,6 +6,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.shoppingapp.presentation.authscreen.SignInScreen
@@ -23,7 +24,41 @@ fun NavGraph (
     ) {
 
 
-       NavHost(navController = navController, startDestination = SignUpScreen) {
+       NavHost(
+           navController = navController,
+           startDestination = SignUpScreen
+       ) {
+
+
+
+           composable<HomeScreen> { backStackEntry ->
+               HomeScreen(
+                   onClickToSignUp = {
+                       navController.navigate(SignUpScreen)
+                   },
+                   onClickToSettings = {
+                       navController.navigate(SettingsScreen)
+                   },
+                   onClickToDetails = { itemId ->
+                       navController.navigate(DetailScreen(itemId))
+                   }
+
+               )
+           }
+
+           composable<DetailScreen> { itemId ->
+               val positionId = itemId.toRoute<DetailScreen>()
+               ProductInfoScreen(
+                   id = positionId.id,
+                   onClickPrevious = {
+                       navController.navigateUp()
+                   },
+                   onClickToCart = {
+                       navController.navigate(CartScreen)
+                   }
+               )
+           }
+
            composable<SignUpScreen> {
                SignUpScreen(
                    onClickToSignIn =  {
@@ -48,20 +83,7 @@ fun NavGraph (
 
 
 
-           composable<HomeScreen> { backStackEntry ->
-               HomeScreen(
-                   onClickToSignUp = {
-                       navController.navigate(SignUpScreen)
-                   },
-                   onClickToSettings = {
-                       navController.navigate(SettingsScreen)
-                   },
-                   onClickToDetails = {
-                       navController.navigate(DetailScreen(it))
-                   }
 
-               )
-           }
 
            composable<ProfileScreen> {
                ProfileScreen(
@@ -83,20 +105,14 @@ fun NavGraph (
                )
            }
 
-           composable<DetailScreen> {
-               val positionId = it.toRoute<DetailScreen>()
-               ProductInfoScreen(
-                   id = positionId.id,
-                   onClickPrevious = {
-                       navController.navigateUp()
-                   },
-               )
-           }
+
 
            composable<CartScreen> {
 
                CartScreen(
-                   onBackClick = { Unit },
+                   onBackClick = {
+                       navController.navigate(HomeScreen)
+                   },
                    onCheckoutClick = { Unit }
                )
            }

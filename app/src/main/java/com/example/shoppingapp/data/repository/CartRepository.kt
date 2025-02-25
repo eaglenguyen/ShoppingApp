@@ -12,20 +12,27 @@ class CartRepository @Inject constructor(
 
     fun getCart(): Flow<List<Cart>> = cartDao.getCart()
 
-    suspend fun addToCart(product: Product) {
-        val cartItem = Cart(
-            id = product.id,
-            title = product.title,
-            price = product.price
-        )
-        cartDao.insert(cartItem)
-    }
+    fun getTotalPrice(): Flow<Double?> = cartDao.getTotalPrice()
 
+    suspend fun addToCart(product: Product) {
+        val existingItem = cartDao.getCartItemById(product.id)
+
+        if (existingItem != null) {
+            cartDao.increaseQuantity(product.id)
+        } else {
+            val cartItem = Cart(
+                id = product.id,
+                title = product.title,
+                price = product.price,
+            )
+            cartDao.insert(cartItem)
+        }
+    }
     suspend fun removeFromCart(product: Product) {
         val cartItem = Cart(
             id = product.id,
             title = product.title,
-            price = product.price
+            price = product.price,
         )
         cartDao.delete(cartItem)
     }
@@ -33,5 +40,18 @@ class CartRepository @Inject constructor(
     suspend fun removeViaId(position: Int) {
         cartDao.deleteId(position)
     }
+
+    suspend fun increaseQuantityCart(position: Int) {
+        cartDao.increaseQuantityCart(position)
+    }
+
+    suspend fun removeQuantityCart(position: Int) {
+        cartDao.removeQuantityCart(position)
+    }
+
+    suspend fun removeIfZero() {
+        cartDao.deleteZeroQuantityItems()
+    }
+
 
 }

@@ -17,10 +17,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val repository: ProductsRepository
+    private val repository: ProductsRepository,
 ): ViewModel() {
 
     var state by mutableStateOf(HomeState())
+
 
     private var searchJob: Job? = null
 

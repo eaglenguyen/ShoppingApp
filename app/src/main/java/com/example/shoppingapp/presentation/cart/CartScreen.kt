@@ -1,7 +1,8 @@
 package com.example.shoppingapp.presentation.cart
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -11,7 +12,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.shoppingapp.presentation.product_info.ProductInfoViewModel
 
+@SuppressLint("DefaultLocale")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CartScreen(
@@ -61,23 +62,6 @@ fun CartScreen(
                     containerColor = Color.White
                 )
             )
-        },
-        bottomBar = {
-            BottomAppBar(
-                containerColor = Color.White,
-                contentPadding = PaddingValues(16.dp),
-            ) {
-                Button(
-                    onClick = onCheckoutClick,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp),
-                    shape = RoundedCornerShape(24.dp),
-                    colors = ButtonDefaults.buttonColors(Color(0xFF6C4FF7)) // Purple color
-                ) {
-                    Text("Checkout", fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                }
-            }
         }
     ) { padding ->
             Column(modifier = Modifier.padding(padding)) {
@@ -89,10 +73,36 @@ fun CartScreen(
                             CartItem(
                                 item = item,
                                 onDelete = { viewModel.removeViaId(index) },
-                                onQuantityChange = { /* Handle quantity change */ }
+                                removeQuantity = { viewModel.removeQuantityCart(index) },
+                                addQuantity = { viewModel.increaseQuantityCart(index) }
                             )
                         }
                     }
+
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+
+                val formattedTotalPrice = if (state.totalPrice == null) {
+                    "0.00"
+                } else {
+                    String.format("%.2f", state.totalPrice)
+                }
+
+                Text("Total: $${formattedTotalPrice}")
+
+
+                Button(
+                    onClick = onCheckoutClick,
+                    enabled =  state.cartList.isNotEmpty(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp),
+                    shape = RoundedCornerShape(24.dp),
+                    colors = ButtonDefaults.buttonColors(Color(0xFF6C4FF7)) // Purple color
+                ) {
+                    Text("Checkout", fontSize = 18.sp, fontWeight = FontWeight.Bold)
                 }
             }
         }

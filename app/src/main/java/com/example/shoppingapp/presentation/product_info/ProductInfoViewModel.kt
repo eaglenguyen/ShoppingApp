@@ -6,11 +6,16 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.shoppingapp.data.repository.CartRepository
 import com.example.shoppingapp.domain.model.Product
 import com.example.shoppingapp.domain.repository.ProductsRepository
 import com.example.shoppingapp.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,19 +31,37 @@ class ProductInfoViewModel @Inject constructor(
         private set
 
 
-
     init {
         loadProduct()
-        loadCartItems()
+        observeCartAndPrice()
+        removeItemZero()
     }
 
-    private fun loadCartItems() {
+    // Combines both flows and collect them into one function
+    private fun observeCartAndPrice() {
+        viewModelScope.launch {
+            combine(
+                cartRepository.getCart(),
+                cartRepository.getTotalPrice()
+            ) { cartItems, cartPrice ->
+                state.copy(cartList = cartItems, totalPrice = cartPrice)
+            }.collectLatest { newState ->
+                state = newState
+            }
+        }
+    }
+
+
+
+/*    private fun loadCartItems() {
         viewModelScope.launch {
             cartRepository.getCart().collect { cartItems ->
                 state = state.copy(cartList = cartItems)
             }
         }
     }
+*/
+
 
 
     private fun loadProduct() {
@@ -76,11 +99,7 @@ class ProductInfoViewModel @Inject constructor(
         }
     }
 
-    fun removeFromCart(product: Product) {
-        viewModelScope.launch {
-            cartRepository.removeFromCart(product)
-        }
-    }
+
 
     fun removeViaId(position: Int) {
         viewModelScope.launch {
@@ -88,6 +107,22 @@ class ProductInfoViewModel @Inject constructor(
         }
     }
 
+    fun increaseQuantityCart(position: Int) {
+        viewModelScope.launch {
+            cartRepository.increaseQuantityCart(position)
+        }
+    }
 
+    fun removeQuantityCart(position: Int) {
+        viewModelScope.launch {
+            cartRepository.removeQuantityCart(position)
+        }
+    }
+
+    fun removeItemZero() {
+        viewModelScope.launch {
+            cartRepository.removeIfZero()
+        }
+    }
 
 }
