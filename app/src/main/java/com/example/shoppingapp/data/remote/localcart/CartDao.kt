@@ -21,57 +21,14 @@ interface CartDao {
     suspend fun delete(cart: Cart)
 
 
-    @Query("SELECT * FROM cart WHERE id = :id LIMIT 1")
-    suspend fun getCartItemById(id: Int): Cart?
-
-
-
-
-    @Query("""
-        UPDATE cart 
-        SET quantity = quantity + 1
-        WHERE id = :id
-    """)
-    suspend fun increaseQuantity(id: Int)
-
-
-
-
-    @Query("""
-        UPDATE cart 
-        SET quantity = quantity + 1
-        WHERE id = (SELECT id FROM cart LIMIT 1 OFFSET :position)
-    """)
-    suspend fun increaseQuantityCart(position: Int)
-
-
-
-
-    @Query("""
-        UPDATE cart 
-        SET quantity = quantity - 1
-        WHERE id = (SELECT id FROM cart LIMIT 1 OFFSET :position)
-        AND quantity > 0
-
-    """)
-    suspend fun removeQuantityCart(position: Int)
-
-
-    @Query("""
-    DELETE FROM cart 
-    WHERE quantity <= 0
-""")
-    suspend fun deleteZeroQuantityItems()
-
-    // removing item once it hits zero not working
-
-
-
     @Query("DELETE FROM cart WHERE id IN (SELECT id FROM cart LIMIT 1 OFFSET :position)")
     suspend fun deleteId(position: Int)
 
 
 
+
+    @Query("SELECT * FROM cart WHERE id = :id LIMIT 1")
+    suspend fun getCartItemById(id: Int): Cart?
 
     @Query("SELECT * from cart")
     fun getCart(): Flow<List<Cart>>
@@ -80,6 +37,57 @@ interface CartDao {
     // Gets the total sum value from the cart table,
     @Query("SELECT SUM(CAST(price AS REAL)) FROM cart")
     fun getTotalPrice(): Flow<Double?>
+
+
+
+
+
+    @Query("""
+        UPDATE cart 
+        SET quantity = quantity + 1,
+            price = CAST(price AS REAL) + :itemPrice
+        WHERE id = :id
+    """)
+    suspend fun increaseQuantity(id: Int, itemPrice: Double)
+
+
+
+
+    @Query("""
+        UPDATE cart 
+        SET quantity = quantity + 1,
+                    price = CAST(price AS REAL) + :itemPrice
+        WHERE id = (SELECT id FROM cart LIMIT 1 OFFSET :position)
+    """)
+    suspend fun increaseQuantityCart(position: Int, itemPrice: Double)
+
+
+
+
+    @Query("""
+        UPDATE cart 
+        SET quantity = quantity - 1,
+                    price = CAST(price AS REAL) - :itemPrice
+        WHERE id = (SELECT id FROM cart LIMIT 1 OFFSET :position)
+        AND quantity > 0
+
+    """)
+    suspend fun removeQuantityCart(position: Int, itemPrice: Double)
+
+    // removing item once it hits zero only shows after recomposition
+    @Query("""
+    DELETE FROM cart 
+    WHERE id = (SELECT id FROM cart LIMIT 1 OFFSET :position) 
+    AND quantity <= 0
+""")
+    suspend fun deleteZeroQuantityItems(position: Int)
+
+
+
+
+
+
+
 
 
 

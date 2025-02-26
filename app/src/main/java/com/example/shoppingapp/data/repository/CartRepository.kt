@@ -18,7 +18,7 @@ class CartRepository @Inject constructor(
         val existingItem = cartDao.getCartItemById(product.id)
 
         if (existingItem != null) {
-            cartDao.increaseQuantity(product.id)
+            cartDao.increaseQuantity(product.id, product.price.toDouble())
         } else {
             val cartItem = Cart(
                 id = product.id,
@@ -41,16 +41,16 @@ class CartRepository @Inject constructor(
         cartDao.deleteId(position)
     }
 
-    suspend fun increaseQuantityCart(position: Int) {
-        cartDao.increaseQuantityCart(position)
+    suspend fun increaseQuantityCart(position: Int, itemPrice: Double) {
+        cartDao.increaseQuantityCart(position, itemPrice)
     }
 
-    suspend fun removeQuantityCart(position: Int) {
-        cartDao.removeQuantityCart(position)
+    suspend fun removeQuantityCart(position: Int, itemPrice: Double) {
+        cartDao.removeQuantityCart(position, itemPrice)
     }
 
-    suspend fun removeIfZero() {
-        cartDao.deleteZeroQuantityItems()
+    suspend fun removeIfZero(position: Int) {
+        cartDao.deleteZeroQuantityItems(position)
     }
 
 

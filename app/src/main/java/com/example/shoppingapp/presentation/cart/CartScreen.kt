@@ -70,11 +70,15 @@ fun CartScreen(
                 } else {
                     LazyColumn {
                         itemsIndexed(state.cartList) { index, item ->
+                            // item.price returns total price of items, this returns single unit price
+                            val unitPrice = item.price.toDouble() / item.quantity
                             CartItem(
                                 item = item,
                                 onDelete = { viewModel.removeViaId(index) },
-                                removeQuantity = { viewModel.removeQuantityCart(index) },
-                                addQuantity = { viewModel.increaseQuantityCart(index) }
+                                removeQuantity = { viewModel.removeQuantityCart(index, unitPrice)
+                                                   viewModel.removeItemZero(index)
+                                                 },
+                                addQuantity = { viewModel.increaseQuantityCart(index, unitPrice) }
                             )
                         }
                     }

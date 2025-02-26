@@ -6,16 +6,13 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.shoppingapp.data.repository.CartRepository
 import com.example.shoppingapp.domain.model.Product
 import com.example.shoppingapp.domain.repository.ProductsRepository
 import com.example.shoppingapp.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -34,7 +31,6 @@ class ProductInfoViewModel @Inject constructor(
     init {
         loadProduct()
         observeCartAndPrice()
-        removeItemZero()
     }
 
     // Combines both flows and collect them into one function
@@ -107,21 +103,21 @@ class ProductInfoViewModel @Inject constructor(
         }
     }
 
-    fun increaseQuantityCart(position: Int) {
+    fun increaseQuantityCart(position: Int, itemPrice: Double) {
         viewModelScope.launch {
-            cartRepository.increaseQuantityCart(position)
+            cartRepository.increaseQuantityCart(position, itemPrice)
         }
     }
 
-    fun removeQuantityCart(position: Int) {
+    fun removeQuantityCart(position: Int, itemPrice: Double) {
         viewModelScope.launch {
-            cartRepository.removeQuantityCart(position)
+            cartRepository.removeQuantityCart(position, itemPrice)
         }
     }
 
-    fun removeItemZero() {
+    fun removeItemZero(position: Int) {
         viewModelScope.launch {
-            cartRepository.removeIfZero()
+            cartRepository.removeIfZero(position)
         }
     }
 

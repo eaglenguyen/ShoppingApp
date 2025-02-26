@@ -297,7 +297,7 @@ fun ProductInfoScreen(
                                             }
                                         )
                                         {
-                                            Text("Checkout")
+                                            Text("Cart")
                                         }
 
                                         Spacer(modifier = Modifier.width(8.dp))
