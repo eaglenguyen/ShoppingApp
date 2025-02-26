@@ -35,7 +35,8 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     onClickToSignUp: () -> Unit,
     onClickToSettings: () -> Unit,
-    onClickToDetails: (Int) -> Unit
+    onClickToDetails: (Int) -> Unit,
+    onClickToCheckOut: () -> Unit
 ) {
 
 
@@ -117,7 +118,7 @@ fun HomeScreen(
             2 -> {
                 CartScreen(
                     onBackClick = { Unit },
-                    onCheckoutClick = { Unit }
+                    onCheckoutClick = { onClickToCheckOut() }
                 )
             }
             3 -> { ProfileScreen(scaffpadding, onClickToSignUp, onClickToSettings) }

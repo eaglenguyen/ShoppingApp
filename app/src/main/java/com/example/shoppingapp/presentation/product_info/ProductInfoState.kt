@@ -8,5 +8,6 @@ data class ProductInfoState (
     val product: Product? = null,
     val error: String? = null,
     val cartList: List<Cart> = emptyList(),
-    val totalPrice: Double? = 0.0
+    val totalPrice: Double? = 0.0,
+    val totalQuantity: Int? = 0
 )

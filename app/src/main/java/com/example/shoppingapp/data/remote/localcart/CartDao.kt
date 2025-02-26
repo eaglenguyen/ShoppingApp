@@ -39,6 +39,8 @@ interface CartDao {
     fun getTotalPrice(): Flow<Double?>
 
 
+    @Query("SELECT SUM(quantity) FROM cart")
+    fun getTotalQuantity(): Flow<Int?>
 
 
 

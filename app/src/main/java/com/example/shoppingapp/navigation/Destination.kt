@@ -25,7 +25,5 @@ data class DetailScreen(
 @Serializable
 object CartScreen
 
-sealed class Cart {
-
-
-}
+@Serializable
+object CheckoutScreen

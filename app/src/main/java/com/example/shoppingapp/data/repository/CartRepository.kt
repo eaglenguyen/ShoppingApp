@@ -14,6 +14,8 @@ class CartRepository @Inject constructor(
 
     fun getTotalPrice(): Flow<Double?> = cartDao.getTotalPrice()
 
+    fun getTotalQuantity(): Flow<Int?> = cartDao.getTotalQuantity()
+
     suspend fun addToCart(product: Product) {
         val existingItem = cartDao.getCartItemById(product.id)
 

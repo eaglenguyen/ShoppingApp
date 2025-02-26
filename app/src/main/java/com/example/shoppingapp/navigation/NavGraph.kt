@@ -2,19 +2,17 @@ package com.example.shoppingapp.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.shoppingapp.presentation.authscreen.SignInScreen
 import com.example.shoppingapp.presentation.authscreen.SignUpScreen
 import com.example.shoppingapp.presentation.cart.CartScreen
+import com.example.shoppingapp.presentation.checkout.CheckoutScreen
 import com.example.shoppingapp.presentation.home.HomeScreen
 import com.example.shoppingapp.presentation.product_info.ProductInfoScreen
-import com.example.shoppingapp.presentation.product_info.ProductInfoViewModel
 import com.example.shoppingapp.presentation.profile.ProfileScreen
 import com.example.shoppingapp.presentation.profile.subprofile.settings.SettingsScreen
 
@@ -41,6 +39,9 @@ fun NavGraph (
                    },
                    onClickToDetails = { itemId ->
                        navController.navigate(DetailScreen(itemId))
+                   },
+                   onClickToCheckOut = {
+                       navController.navigate(CheckoutScreen)
                    }
 
                )
@@ -113,10 +114,21 @@ fun NavGraph (
                    onBackClick = {
                        navController.navigate(HomeScreen)
                    },
-                   onCheckoutClick = { Unit }
+                   onCheckoutClick = {
+                       navController.navigate(CheckoutScreen)
+                   }
                )
            }
 
+
+           composable<CheckoutScreen> {
+
+               CheckoutScreen(
+                   onClickToCart = {
+                       navController.navigateUp()
+                   }
+               )
+           }
 
        }
 

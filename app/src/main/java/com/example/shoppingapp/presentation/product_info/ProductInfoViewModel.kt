@@ -31,6 +31,7 @@ class ProductInfoViewModel @Inject constructor(
     init {
         loadProduct()
         observeCartAndPrice()
+        totalQuantity()
     }
 
     // Combines both flows and collect them into one function
@@ -46,6 +47,8 @@ class ProductInfoViewModel @Inject constructor(
             }
         }
     }
+
+
 
 
 
@@ -118,6 +121,14 @@ class ProductInfoViewModel @Inject constructor(
     fun removeItemZero(position: Int) {
         viewModelScope.launch {
             cartRepository.removeIfZero(position)
+        }
+    }
+
+    fun totalQuantity() {
+        viewModelScope.launch {
+            cartRepository.getTotalQuantity().collect { quantity ->
+                state= state.copy(totalQuantity = quantity)
+            }
         }
     }
 
