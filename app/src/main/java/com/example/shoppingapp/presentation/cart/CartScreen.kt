@@ -28,7 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.shoppingapp.presentation.product_info.ProductInfoViewModel
+import com.example.shoppingapp.presentation.product_info.SharedViewModel
 
 @SuppressLint("DefaultLocale")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -36,7 +36,7 @@ import com.example.shoppingapp.presentation.product_info.ProductInfoViewModel
 fun CartScreen(
     onBackClick: () -> Unit,
     onCheckoutClick: () -> Unit,
-    viewModel: ProductInfoViewModel = hiltViewModel()
+    viewModel: SharedViewModel = hiltViewModel()
 ) {
 
     val state = viewModel.state

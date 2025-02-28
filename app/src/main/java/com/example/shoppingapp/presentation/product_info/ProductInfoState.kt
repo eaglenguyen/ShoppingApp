@@ -9,5 +9,13 @@ data class ProductInfoState (
     val error: String? = null,
     val cartList: List<Cart> = emptyList(),
     val totalPrice: Double? = 0.0,
-    val totalQuantity: Int? = 0
+    val totalQuantity: Int? = 0,
+
+    val fullName: String = "",
+    val address: String = "",
+    val city: String = "",
+    val state: String = "",
+    val zipcode: String = "",
+    val displayAddress: String = ""
+
 )

@@ -35,13 +35,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.shoppingapp.presentation.product_info.ProductInfoViewModel
+import com.example.shoppingapp.presentation.product_info.SharedViewModel
 
 @SuppressLint("DefaultLocale")
 @Composable
 fun CheckoutScreen(
     onClickToCart: () -> Unit,
-    viewModel: ProductInfoViewModel = hiltViewModel()
+    onClickToAddressForm: () -> Unit,
+    onClickToSuccess: () -> Unit,
+    viewModel: SharedViewModel = hiltViewModel()
 ) {
 
     val state = viewModel.state
@@ -75,7 +77,7 @@ fun CheckoutScreen(
 
         // Address Section
         Card(
-            modifier = Modifier.fillMaxWidth().clickable { },
+            modifier = Modifier.fillMaxWidth().clickable { onClickToAddressForm() },
             shape = RoundedCornerShape(12.dp),
         ) {
             Row(
@@ -91,11 +93,10 @@ fun CheckoutScreen(
                 Spacer(modifier = Modifier.width(8.dp))
                 Column {
                     Text(
-                        text = "325 15th Eighth Avenue, NewYork",
-                        fontWeight = FontWeight.Bold
+                        text = "${state.address}, ${state.city}, ${state.state} ${state.zipcode}"
                     )
                     Text(
-                        text = "And let him flee from that pleasure often.",
+                        text = state.fullName,
                         fontSize = 12.sp,
                         color = Color.Gray
                     )
@@ -159,7 +160,7 @@ fun CheckoutScreen(
 
         // Confirm Order Button
         Button(
-            onClick = { /* Handle order confirmation */ },
+            onClick = { onClickToSuccess() },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp),

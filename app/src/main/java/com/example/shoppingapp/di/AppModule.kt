@@ -9,8 +9,12 @@ import com.example.shoppingapp.auth.AuthRepository
 import com.example.shoppingapp.auth.AuthRepositoryImpl
 import com.example.shoppingapp.data.remote.StoreApi
 import com.example.shoppingapp.data.remote.StoreApi.Companion.BASE_URL
+import com.example.shoppingapp.data.remote.address.AddressDao
+import com.example.shoppingapp.data.remote.address.AddressDatabase
+import com.example.shoppingapp.data.remote.address.AddressEntity
 import com.example.shoppingapp.data.remote.local.ProductsDatabase
 import com.example.shoppingapp.data.remote.localcart.CartDao
+import com.example.shoppingapp.data.repository.AddressRepository
 import com.example.shoppingapp.data.repository.CartRepository
 import com.example.shoppingapp.data.repository.ProductsRepositoryImpl
 import com.example.shoppingapp.data.util.Converters
@@ -77,13 +81,35 @@ object AppModule {
             .build()
     }
 
+    @Provides
+    @Singleton
+    fun provideAddressDatabase(app: Application): AddressDatabase {
+        return Room.databaseBuilder(
+            app,
+            AddressDatabase::class.java,
+            "address_db"
+        )
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+
 
     @Provides
     fun provideDao(db: ProductsDatabase) = db.cartDao
 
     @Provides
+    fun provideAddressDao(db: AddressDatabase) = db.addressDao
+
+
+
+    @Provides
     @Singleton
     fun provideCartRepository(cartDao: CartDao) : CartRepository = CartRepository(cartDao)
+
+    @Provides
+    @Singleton
+    fun provideAddressRepository(addressDao: AddressDao) : AddressRepository = AddressRepository(addressDao)
+
 
     @Provides
     @Singleton

@@ -1,5 +1,6 @@
 package com.example.shoppingapp.navigation
 
+import AddressFormScreen
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -11,6 +12,7 @@ import com.example.shoppingapp.presentation.authscreen.SignInScreen
 import com.example.shoppingapp.presentation.authscreen.SignUpScreen
 import com.example.shoppingapp.presentation.cart.CartScreen
 import com.example.shoppingapp.presentation.checkout.CheckoutScreen
+import com.example.shoppingapp.presentation.checkout.OrderCompleteScreen
 import com.example.shoppingapp.presentation.home.HomeScreen
 import com.example.shoppingapp.presentation.product_info.ProductInfoScreen
 import com.example.shoppingapp.presentation.profile.ProfileScreen
@@ -29,7 +31,7 @@ fun NavGraph (
 
 
 
-           composable<HomeScreen> { backStackEntry ->
+           composable<HomeScreen> {
                HomeScreen(
                    onClickToSignUp = {
                        navController.navigate(SignUpScreen)
@@ -122,10 +124,35 @@ fun NavGraph (
 
 
            composable<CheckoutScreen> {
-
                CheckoutScreen(
                    onClickToCart = {
-                       navController.navigateUp()
+                       navController.navigate(CartScreen)
+                   },
+                   onClickToAddressForm = {
+                       navController.navigate(AddressFormScreen)
+                   },
+                   onClickToSuccess = {
+                       navController.navigate(SuccessScreen)
+                   }
+
+               )
+           }
+
+           composable<AddressFormScreen> {
+
+               AddressFormScreen (
+                 onBackClick = {
+                     navController.navigateUp()
+                 }, onSaveClick = {
+                     navController.navigate(CheckoutScreen)
+                   }
+               )
+           }
+
+           composable<SuccessScreen> {
+               OrderCompleteScreen(
+                   onContinueShopping = {
+                       navController.navigate(HomeScreen)
                    }
                )
            }

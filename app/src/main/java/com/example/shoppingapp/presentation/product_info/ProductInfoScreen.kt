@@ -59,7 +59,7 @@ fun ProductInfoScreen(
     id: Int,
     onClickPrevious: () -> Unit,
     onClickToCart: () -> Unit,
-    viewModel: ProductInfoViewModel = hiltViewModel(),
+    viewModel: SharedViewModel = hiltViewModel(),
 ) {
 
     var maxline by rememberSaveable {

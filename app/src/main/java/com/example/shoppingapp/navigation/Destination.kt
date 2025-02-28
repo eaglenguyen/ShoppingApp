@@ -27,3 +27,9 @@ object CartScreen
 
 @Serializable
 object CheckoutScreen
+
+@Serializable
+object AddressFormScreen
+
+@Serializable
+object SuccessScreen
