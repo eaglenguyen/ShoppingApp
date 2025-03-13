@@ -26,6 +26,7 @@ class CartRepository @Inject constructor(
                 id = product.id,
                 title = product.title,
                 price = product.price,
+                image = product.image
             )
             cartDao.insert(cartItem)
         }
@@ -35,6 +36,7 @@ class CartRepository @Inject constructor(
             id = product.id,
             title = product.title,
             price = product.price,
+            image = product.image
         )
         cartDao.delete(cartItem)
     }

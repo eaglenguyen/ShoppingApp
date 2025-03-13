@@ -79,6 +79,10 @@ dependencies {
 
     implementation(libs.coil.compose)
 
+    implementation(libs.lottie.compose)
+    implementation(libs.core.splashscreen)
+
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

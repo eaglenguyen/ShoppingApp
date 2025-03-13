@@ -11,7 +11,6 @@ import com.example.shoppingapp.data.remote.StoreApi
 import com.example.shoppingapp.data.remote.StoreApi.Companion.BASE_URL
 import com.example.shoppingapp.data.remote.address.AddressDao
 import com.example.shoppingapp.data.remote.address.AddressDatabase
-import com.example.shoppingapp.data.remote.address.AddressEntity
 import com.example.shoppingapp.data.remote.local.ProductsDatabase
 import com.example.shoppingapp.data.remote.localcart.CartDao
 import com.example.shoppingapp.data.repository.AddressRepository
@@ -45,7 +44,7 @@ object AppModule {
     @Singleton
     fun provideAuthApi(): AuthApi {
         return Retrofit.Builder()
-            .baseUrl("http://192.168.50.32:8080/")
+            .baseUrl("http://192.168.50.31:8080/")
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
             .create()

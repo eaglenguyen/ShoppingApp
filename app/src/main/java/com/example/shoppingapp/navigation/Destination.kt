@@ -33,3 +33,6 @@ object AddressFormScreen
 
 @Serializable
 object SuccessScreen
+
+@Serializable
+object SplashScreen

@@ -34,7 +34,7 @@ class SharedViewModel @Inject constructor(
 
     init {
         loadProduct()
-        observeCartAndPrice()
+        observeCartPriceQuantity()
         getSavedAddress()
     }
 
@@ -63,6 +63,7 @@ class SharedViewModel @Inject constructor(
         }
     }
 
+    // collect {} to listen for updates and update the UI state whenever a new address is emitted.
     private fun getSavedAddress() {
         viewModelScope.launch {
             addressRepository.getSavedAddress().collect { address ->
@@ -81,8 +82,8 @@ class SharedViewModel @Inject constructor(
 
 
 
-    // Combines both flows and collect them into one function
-    private fun observeCartAndPrice() {
+    // Combines 3 flows and collect them into one function
+    private fun observeCartPriceQuantity() {
         viewModelScope.launch {
             combine(
                 cartRepository.getCart(),

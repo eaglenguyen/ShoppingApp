@@ -1,5 +1,6 @@
 package com.example.shoppingapp.presentation.home
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -11,6 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -26,17 +28,14 @@ class HomeViewModel @Inject constructor(
     private var searchJob: Job? = null
 
     private val resultChannel = Channel<Resource<Unit>>()
-    val homeResult = resultChannel.receiveAsFlow()
-
+    // val homeResult = resultChannel.receiveAsFlow()
 
     init {
         showProducts()
     }
 
-    fun refreshProducts() {
-        state = state.copy(isRefreshing = true)
-        showProducts()
-    }
+
+
 
 
     fun changeItemIndex(index: Int) {
@@ -50,8 +49,7 @@ class HomeViewModel @Inject constructor(
         when(event) {
             is HomeScreenUiEvent.SignOut -> signOut()
             is HomeScreenUiEvent.OnSearchQueryChange -> {
-                state = state.copy(searchQuery = event.query,
-                    isRefreshing = false)
+                state = state.copy(searchQuery = event.query)
                 searchJob?.cancel()
                 searchJob = viewModelScope.launch() {
                     delay(500L)
@@ -70,30 +68,29 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun showProducts(
+     private fun showProducts(
         query: String = state.searchQuery.lowercase(),
     ) {
         viewModelScope.launch {
-            repository.getProductsList(query).collect {
+            state = state.copy(isLoading = true)
+            delay(100)
+            repository.getProductsList(query).collectLatest {
                 when(it) {
-                    is Resource.Loading -> {
-                        state = state.copy(isLoading = true)
-                    }
-
-                    is Resource.Error -> {
-                        state = state.copy(isLoading = false)
-                    }
                     is Resource.Success -> {
                         state = state.copy(
-                            isRefreshing = false,
                             isLoading = false,
-                            productList = it.data!!
+                            productList = it.data ?: emptyList(),
+                            error = null
                         )
                     }
-
-                    is Resource.Unauthorized -> {
-                        state = state.copy(isLoading = false)
+                    is Resource.Error, is Resource.Unauthorized -> {
+                        Log.e("HomeViewModel", "Error: ${it.message}")
+                        state = state.copy(
+                            isLoading = false,
+                            error = it.message,
+                        )
                     }
+                    else -> Unit
                 }
             }
         }

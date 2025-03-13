@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.example.shoppingapp.presentation.SplashScreen
 import com.example.shoppingapp.presentation.authscreen.SignInScreen
 import com.example.shoppingapp.presentation.authscreen.SignUpScreen
 import com.example.shoppingapp.presentation.cart.CartScreen
@@ -26,10 +27,13 @@ fun NavGraph (
 
        NavHost(
            navController = navController,
-           startDestination = SignUpScreen
+           startDestination = SplashScreen
        ) {
 
 
+           composable<SplashScreen> {
+               SplashScreen(navController)
+           }
 
            composable<HomeScreen> {
                HomeScreen(

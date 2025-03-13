@@ -8,7 +8,7 @@ import com.example.shoppingapp.data.remote.localcart.CartDao
 import com.example.shoppingapp.data.util.Converters
 
 
-@Database(entities = [ProductsEntity::class, Cart::class], version = 4, exportSchema = false)
+@Database(entities = [ProductsEntity::class, Cart::class], version = 5, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class ProductsDatabase: RoomDatabase() {
 

@@ -84,16 +84,10 @@ fun SignUpScreen(
         Spacer(modifier = Modifier.height(150.dp))
 
         // Name Field
-        OutlinedTextField(
+        AuthTextField(
             value = state.signUpName,
             onValueChange = { viewModel.onEvent(AuthUiEvent.SignUpNameChanged(it)) },
-            label = { Text("Name") },
-            maxLines = 1,
-            singleLine = true,
-            trailingIcon = {
-
-            },
-            modifier = Modifier.fillMaxWidth()
+            label = "Name"
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -166,3 +160,4 @@ fun SignUpScreen(
         }
     }
 }
+

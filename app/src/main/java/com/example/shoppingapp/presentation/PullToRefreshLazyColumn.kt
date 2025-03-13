@@ -1,6 +1,5 @@
 package com.example.shoppingapp.presentation
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -68,4 +67,23 @@ fun <T> PullToRefreshLazyColumn(
             modifier = Modifier.align(Alignment.TopCenter)
         )
     }
+
+    // Ctrl + Shift + /
+
+/*    PullToRefreshLazyColumn(
+        items = state.productList,
+        content = { item ->
+            ProductItem(
+                title = item.title,
+                price = "$${item.price}",
+                image = item.image,
+                modifier = Modifier.clickable { onClickToDetails(item.id) }
+            )
+
+        },
+        isRefreshing = state.isRefreshing,
+        onRefresh = { viewModel.refreshProducts() },
+        modifier = Modifier.fillMaxSize(),
+    )*/
 }
+

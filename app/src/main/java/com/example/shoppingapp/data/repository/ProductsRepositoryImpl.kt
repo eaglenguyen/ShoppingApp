@@ -40,6 +40,7 @@ class ProductsRepositoryImpl @Inject constructor(
         val localCache = dao.getProducts()
         if (localCache.isNotEmpty()) {
             emit(Resource.Success(localCache.toProduct()))
+
         } else {
             emit(Resource.Error(message = "No cached data available"))
         }
@@ -48,14 +49,17 @@ class ProductsRepositoryImpl @Inject constructor(
             val fetchApi = api.getProducts()
             dao.insert(fetchApi.toProductsEntity())
 
+
+            val updatedCache = dao.getProducts()
+            emit(Resource.Success(updatedCache.toProduct()))
+
         } catch (e: HttpException){
             emit(Resource.Error(message = "Something went wrong"))
         } catch (e: IOException) {
             emit(Resource.Error(message = "Could not reach server"))
         }
 
-        val updatedCache = dao.getProducts()
-        emit(Resource.Success(updatedCache.toProduct()))
+        emit(Resource.Loading(false)) // 🔹 Always stop loading at the end!
 
 
     }

@@ -99,27 +99,20 @@ fun SignInScreen(
 
 
                 // Email Field
-                OutlinedTextField(
+                AuthTextField(
                     value = state.signInEmail,
-                    onValueChange = { viewModel.onEvent(AuthUiEvent.SignInEmailChanged(it)) },
-                    label = { Text("Email") },
-                    maxLines = 1,
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth()
+                    onValueChange = { viewModel.onEvent(AuthUiEvent.SignInEmailChanged(it))},
+                    label = "Email"
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
                 // Password Field
-                OutlinedTextField(
+                AuthTextField(
                     value = state.signInPassword,
-                    onValueChange = { viewModel.onEvent(AuthUiEvent.SignInPasswordChanged(it)) },
-                    label = { Text("Password") },
-                    maxLines = 1,
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth()
+                    onValueChange = { viewModel.onEvent(AuthUiEvent.SignInPasswordChanged(it))},
+                    label = "Email"
                 )
-
 
 
                 Spacer(modifier = Modifier.height(24.dp))
@@ -136,5 +129,22 @@ fun SignInScreen(
                 }
             }
         }
+    )
+}
+
+@Composable
+fun AuthTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: String,
+    modifier: Modifier = Modifier
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        label = { Text(label) },
+        maxLines = 1,
+        singleLine = true,
+        modifier = modifier.fillMaxWidth()
     )
 }

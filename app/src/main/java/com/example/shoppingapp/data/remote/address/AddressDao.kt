@@ -12,6 +12,7 @@ interface AddressDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAddress(address: AddressEntity)
 
+    // ORDER BY id DESC LIMIT 1 returns only 1 latest address entry row, simulating overwriting old entry
     @Query("SELECT * FROM address ORDER BY id DESC LIMIT 1")
     fun getLatestAddress(): Flow<AddressEntity?>
 }

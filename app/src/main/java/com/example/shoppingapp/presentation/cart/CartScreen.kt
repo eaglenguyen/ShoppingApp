@@ -1,7 +1,9 @@
 package com.example.shoppingapp.presentation.cart
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -14,7 +16,9 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -68,7 +72,9 @@ fun CartScreen(
                 if (state.cartList.isEmpty()) {
                     Text("Your cart is currently empty", modifier = Modifier.padding(16.dp))
                 } else {
-                    LazyColumn {
+                    LazyColumn(
+                        modifier = Modifier.weight(1f)
+                    ) {
                         itemsIndexed(state.cartList) { index, item ->
                             // item.price returns total price of items, this returns single unit price
                             val unitPrice = item.price.toDouble() / item.quantity
@@ -80,6 +86,12 @@ fun CartScreen(
                                                  },
                                 addQuantity = { viewModel.increaseQuantityCart(index, unitPrice) }
                             )
+                            HorizontalDivider(
+                                modifier = Modifier.padding(vertical = 8.dp),
+                                thickness = 5.dp,
+                                color = Color.White
+                            )
+
                         }
                     }
 
@@ -88,14 +100,18 @@ fun CartScreen(
                 Spacer(modifier = Modifier.height(16.dp))
 
 
-                val formattedTotalPrice = if (state.totalPrice == null) {
-                    "0.00"
-                } else {
-                    String.format("%.2f", state.totalPrice)
+
+                // Centered Total Price
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center // Centers the text horizontally
+                ) {
+                    val formattedTotalPrice = state.totalPrice?.let { String.format("%.2f", it) } ?: "0.00"
+                    Text(
+                        text = "Subtotal: $$formattedTotalPrice",
+                        fontSize = 18.sp,
+                    )
                 }
-
-                Text("Total: $${formattedTotalPrice}")
-
 
                 Button(
                     onClick = onCheckoutClick,
