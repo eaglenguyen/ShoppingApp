@@ -45,6 +45,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.shoppingapp.R
 import com.example.shoppingapp.navigation.HomeScreen
 import com.example.shoppingapp.navigation.SignUpScreen
+import com.example.shoppingapp.ui.theme.sourGummy
 
 @Composable
 fun SplashScreen(navController: NavController) {
@@ -131,15 +132,19 @@ fun CustomDialog(
             Text(
                 text = "Thank you for installing the ShoppingApp!",
                 fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
+                fontWeight = FontWeight.Normal,
+                textAlign = TextAlign.Center,
+                fontFamily = sourGummy
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "Choose to make an account or continue as a guest to explore the app!",
                 fontSize = 14.sp,
-                textAlign = TextAlign.Center
-            )
+                textAlign = TextAlign.Center,
+                fontFamily = sourGummy,
+                fontWeight = FontWeight.Light,
+
+                )
             Spacer(modifier = Modifier.height(12.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -149,7 +154,11 @@ fun CustomDialog(
                     modifier = Modifier.border(2.dp, Color.Gray, RoundedCornerShape(18.dp)),
                     onClick = { onDismiss() },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE6F6FF), contentColor = Color.DarkGray)) {
-                    Text("Login/Signup")
+                    Text("Login/Signup",
+                        fontFamily = sourGummy,
+                        fontWeight = FontWeight.Light,
+                        )
+
 
                 }
                 Button(
@@ -157,7 +166,9 @@ fun CustomDialog(
                     modifier = Modifier.background(Color(0xFF004965), shape = RoundedCornerShape(18.dp)),
 
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF004965))) {
-                    Text("Continue as Guest")
+                    Text("Continue as Guest",
+                        fontFamily = sourGummy,
+                        fontWeight = FontWeight.Light,)
                 }
             }
 

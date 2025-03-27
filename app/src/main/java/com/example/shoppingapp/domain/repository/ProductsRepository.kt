@@ -14,7 +14,4 @@ interface ProductsRepository {
         id: Int
     ): Resource<Product>
 
-
-    suspend fun signOut(): Resource<Unit>
-
 }

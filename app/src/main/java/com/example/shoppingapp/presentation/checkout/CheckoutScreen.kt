@@ -1,6 +1,7 @@
 package com.example.shoppingapp.presentation.checkout
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -162,9 +163,8 @@ fun CheckoutScreen(
         Button(
             onClick = { onClickToSuccess() },
             modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF7D4CDB)),
+                .fillMaxWidth().background(Color.Black, shape = RoundedCornerShape(18.dp)),
+            colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
             shape = RoundedCornerShape(12.dp)
         ) {
             Text(text = "Confirm Order", fontSize = 16.sp, color = Color.White)

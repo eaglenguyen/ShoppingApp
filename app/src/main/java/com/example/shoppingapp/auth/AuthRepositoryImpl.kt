@@ -40,8 +40,12 @@ class AuthRepositoryImpl(
             )
             prefs.edit()
                 .putString("jwt", response.token)
+                .putString("name", response.name)
+                .putString("email", response.email)
                 .apply()
+
             AuthResult.Authorized()
+
         } catch (e: HttpException) {
             Log.e("AuthRepository", "signIn error: ${e.message()}", e)
             if (e.code() == 401) {
@@ -50,7 +54,11 @@ class AuthRepositoryImpl(
                 Log.e("AuthRepository", "Unexpected Exception: ${e.message}", e)
                 AuthResult.UnknownError()
             }
-        }    }
+        }
+    }
+
+
+
 
     override suspend fun signOut(): AuthResult<Unit> {
         return try {
@@ -60,6 +68,7 @@ class AuthRepositoryImpl(
             AuthResult.UnknownError()
         }
     }
+
 
     override suspend fun authenticate(): AuthResult<Unit> {
         return try {

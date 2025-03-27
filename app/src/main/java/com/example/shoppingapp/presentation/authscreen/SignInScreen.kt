@@ -58,6 +58,8 @@ fun SignInScreen(
                         Toast.LENGTH_LONG
                     ).show()
                 }
+
+                is AuthResult.Success -> Unit
             }
         }
     }
@@ -111,7 +113,7 @@ fun SignInScreen(
                 AuthTextField(
                     value = state.signInPassword,
                     onValueChange = { viewModel.onEvent(AuthUiEvent.SignInPasswordChanged(it))},
-                    label = "Email"
+                    label = "Password"
                 )
 
 

@@ -1,6 +1,7 @@
 package com.example.shoppingapp.presentation.cart
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,7 +17,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -50,7 +50,10 @@ fun CartScreen(
             TopAppBar(
                 title = { Text("Cart", fontWeight = FontWeight.Bold) },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick) {
+                    IconButton(
+                        onClick = {onBackClick()},
+
+                    ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back"
@@ -116,11 +119,11 @@ fun CartScreen(
                 Button(
                     onClick = onCheckoutClick,
                     enabled =  state.cartList.isNotEmpty(),
-                    modifier = Modifier
+                    modifier = Modifier.padding(16.dp)
                         .fillMaxWidth()
-                        .height(50.dp),
+                        .background(Color.Black, shape = RoundedCornerShape(18.dp)),
                     shape = RoundedCornerShape(24.dp),
-                    colors = ButtonDefaults.buttonColors(Color(0xFF6C4FF7)) // Purple color
+                    colors = ButtonDefaults.buttonColors(Color.Black)
                 ) {
                     Text("Checkout", fontSize = 18.sp, fontWeight = FontWeight.Bold)
                 }

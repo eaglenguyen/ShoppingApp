@@ -17,10 +17,13 @@ interface AuthApi {
         @Body request: AuthRequest
     ): TokenResponse
 
+
     @GET("authenticate")
     suspend fun authenticate(
         @Header("Authorization") token: String
     )
+
+
 
 
 }

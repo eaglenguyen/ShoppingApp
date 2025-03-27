@@ -1,6 +1,5 @@
 package com.example.shoppingapp.data.repository
 
-import android.content.SharedPreferences
 import com.example.shoppingapp.data.mapper.toProduct
 import com.example.shoppingapp.data.mapper.toProductsEntity
 import com.example.shoppingapp.data.remote.StoreApi
@@ -8,6 +7,7 @@ import com.example.shoppingapp.data.remote.local.ProductsDao
 import com.example.shoppingapp.domain.model.Product
 import com.example.shoppingapp.domain.repository.ProductsRepository
 import com.example.shoppingapp.util.Resource
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
@@ -18,7 +18,6 @@ import javax.inject.Inject
 class ProductsRepositoryImpl @Inject constructor(
     private val api: StoreApi,
     private val dao: ProductsDao,
-    private val prefs: SharedPreferences
 ): ProductsRepository {
 
 
@@ -26,7 +25,9 @@ class ProductsRepositoryImpl @Inject constructor(
         query: String
     ): Flow<Resource<List<Product>>> = flow {
 
+
         emit(Resource.Loading(true))
+        delay(500)
         val searchProducts = dao.searchProductTitle(query)
         emit(Resource.Success(searchProducts.toProduct()))
 
@@ -80,13 +81,6 @@ class ProductsRepositoryImpl @Inject constructor(
 
 
 
-    override suspend fun signOut(): Resource<Unit> {
-        return try {
-            prefs.edit().remove("jwt").apply()
-            Resource.Unauthorized()
-        } catch (e: HttpException){
-            Resource.Error("Error")
-        }
-    }
+
 
 }

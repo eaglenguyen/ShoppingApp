@@ -1,6 +1,7 @@
 package com.example.shoppingapp.presentation.authscreen
 
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -35,8 +36,14 @@ import com.example.shoppingapp.auth.AuthResult
 fun SignUpScreen(
     onClickToSignIn: () -> Unit,
     onClickToHome: () -> Unit,
+    onClickToSplash:() -> Unit,
     viewModel: AuthViewModel = hiltViewModel()
 ) {
+
+    // Overrides back navigation when signing out from guest
+    BackHandler {
+        onClickToSplash()
+    }
 
     val state = viewModel.state
     val context = LocalContext.current
@@ -61,6 +68,8 @@ fun SignUpScreen(
                         Toast.LENGTH_LONG
                     ).show()
                 }
+
+                is AuthResult.Success -> Unit
             }
         }
     }

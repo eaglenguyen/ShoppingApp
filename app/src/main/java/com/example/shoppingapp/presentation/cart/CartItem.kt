@@ -49,7 +49,7 @@ fun CartItem(
         )
         Spacer(modifier = Modifier.width(8.dp))
         Column(modifier = Modifier.weight(1f)) {
-            Text(text = item.title, fontWeight = FontWeight.Light, fontSize = 15.sp)
+            Text(text = item.title, fontWeight = FontWeight.Medium, fontSize = 15.sp)
             Text(text = "$${item.price}", fontWeight = FontWeight.Bold, fontSize = 18.sp, color = Color.Black)
             Text(text = "In Stock", fontWeight = FontWeight.Normal, fontSize = 15.sp, color = Color(0xFF006400) ) // dark green
             Box(
@@ -57,43 +57,48 @@ fun CartItem(
                     .border(1.dp, Color.Gray, shape = CircleShape) // Outlined oval shape
                     .padding(1.dp) // Padding inside the border
             ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = { removeQuantity() }) {
-                    if (item.quantity <= 1) {
-                        Icon(Icons.Default.Delete, contentDescription = "Decrease quantity")
-                    } else {
-                        Icon(BaselineRemoveCircle24, contentDescription = "Decrease quantity")
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    IconButton(
+                        onClick = { removeQuantity() },
+                        modifier = Modifier.size(40.dp)
+                    ) {
+                        Icon(
+                            imageVector = if (item.quantity <= 1) Icons.Default.Delete else BaselineRemoveCircle24,
+                            contentDescription = "Decrease quantity"
+                        )
+                    }
+
+                    Text(text = item.quantity.toString(), fontSize = 14.sp, modifier = Modifier.padding(horizontal = 8.dp))
+
+                    IconButton(
+                        onClick = { addQuantity() },
+                        modifier = Modifier.size(40.dp)
+                    ) {
+                        Icon(Icons.Default.Add, contentDescription = "Increase quantity")
                     }
                 }
-
-                Text(
-                    text = item.quantity.toString(),
-                    fontSize = 16.sp,
-                    modifier = Modifier.padding(horizontal = 8.dp)
-                )
-
-                IconButton(onClick = { addQuantity() }) {
-                    Icon(Icons.Default.Add, contentDescription = "Increase quantity")
-                }
             }
-            }
+            val buttonModifier = Modifier
+                .size(width = 80.dp, height = 45.dp) // Adjust size
+                .padding(2.dp)
+
             Row(horizontalArrangement = Arrangement.SpaceBetween) {
                 TextButton(
                     onClick = { onDelete() },
-                    modifier = Modifier.padding(2.dp),
+                    modifier = buttonModifier,
                     colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = Color.DarkGray),
                     border = BorderStroke(1.dp, Color.DarkGray)
 
-                ) { Text("Delete") }
+                ) { Text("Delete", fontSize = 13.sp) }
                 TextButton(
                     onClick = { /* TODO: Save for later */ },
-                    modifier = Modifier.padding(2.dp),
+                    modifier = buttonModifier,
                     colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = Color.DarkGray),
                     border = BorderStroke(1.dp, Color.DarkGray))
-                { Text("Save for later") }
+                { Text("Save") }
                 TextButton(
                     onClick = { /* TODO: Share */ },
-                    modifier = Modifier.padding(2.dp),
+                    modifier = buttonModifier,
                     colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = Color.DarkGray),
                     border = BorderStroke(1.dp, Color.DarkGray))
                 { Text("Share") }

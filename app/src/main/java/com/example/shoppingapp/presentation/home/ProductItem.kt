@@ -22,6 +22,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.shoppingapp.ui.theme.funnelDisplay
 
 @Composable
 fun ProductItem(
@@ -35,7 +36,7 @@ fun ProductItem(
 ) {
 
         Column(
-            modifier = modifier.padding(bottom = 5.dp),
+            modifier = modifier.padding(5.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             // Image
@@ -59,13 +60,14 @@ fun ProductItem(
                 Text(
                     text = title,
                     style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
                     color = Color.Black,
                     letterSpacing = 0.8.sp,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    fontFamily = funnelDisplay,
+                    fontWeight = FontWeight.Normal,
                 )
                 Spacer(modifier = Modifier.height(4.dp))
 

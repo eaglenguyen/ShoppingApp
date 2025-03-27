@@ -112,7 +112,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideProductsRepository(api: StoreApi, db: ProductsDatabase, prefs: SharedPreferences): ProductsRepository =  ProductsRepositoryImpl(api,db.productsDao, prefs)
+    fun provideProductsRepository(api: StoreApi, db: ProductsDatabase): ProductsRepository =  ProductsRepositoryImpl(api,db.productsDao)
 
 
 }

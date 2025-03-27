@@ -23,6 +23,7 @@ import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -31,6 +32,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -211,10 +213,10 @@ fun ProductInfoScreen(
                             modifier = Modifier.padding(vertical = 8.dp)
                         ) {
                             val sizes = listOf(
-                                "8",
-                                "10",
-                                "11",
-                                "12"
+                                "S",
+                                "M",
+                                "L",
+                                "XL"
                             )
                             sizes.forEach { size ->
                                 Box(
@@ -237,10 +239,11 @@ fun ProductInfoScreen(
                                 viewModel.addToCart(product)
                                 showBottomSheet = true
                                       },
-                            modifier = Modifier
+                            modifier = Modifier.padding(16.dp)
                                 .fillMaxWidth()
-                                .padding(vertical = 16.dp),
-                            shape = RoundedCornerShape(24.dp)
+                                .background(Color.Black, shape = RoundedCornerShape(18.dp)),
+                            shape = RoundedCornerShape(24.dp),
+                            colors = ButtonDefaults.buttonColors(Color.Black),
                         ) {
                             Text(text = "ADD TO CART")
                         }
@@ -277,7 +280,7 @@ fun ProductInfoScreen(
                                         Button(
                                             modifier = Modifier
                                                 .weight(1f)
-                                                .fillMaxWidth(),
+                                                .fillMaxWidth().background(Color.Black, shape = RoundedCornerShape(18.dp)),
                                             colors = ButtonColors(
                                                 containerColor = Color.Black,
                                                 contentColor = Color.White,
@@ -300,12 +303,13 @@ fun ProductInfoScreen(
                                             Text("Cart")
                                         }
 
-                                        Spacer(modifier = Modifier.width(8.dp))
+                                        Spacer(modifier = Modifier.width(20.dp))
 
                                         Button(
                                             modifier = Modifier
                                                 .weight(1f)
-                                                .fillMaxWidth(),
+                                                .fillMaxWidth()
+                                                .border(1.dp, Color.Gray, RoundedCornerShape(18.dp)),
                                             colors = ButtonColors(
                                                 containerColor = Color.White,
                                                 contentColor = Color.Black,
@@ -335,20 +339,6 @@ fun ProductInfoScreen(
                     }
                 }
 
-        }
-    }
-
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Center
-    ) {
-        if (state.isLoading) {
-            CircularProgressIndicator()
-        } else if (state.error != null) {
-            Text(
-                text = state.error,
-                color = MaterialTheme.colorScheme.error
-            )
         }
     }
 

@@ -1,5 +1,10 @@
 package com.example.shoppingapp.presentation.home
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,9 +30,11 @@ import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.shoppingapp.presentation.cart.CartScreen
 import com.example.shoppingapp.presentation.profile.ProfileScreen
+import com.example.shoppingapp.ui.theme.jua
 
 
 @Composable
@@ -42,13 +49,13 @@ fun HomeScreen(
 
     val state = viewModel.state
     val gridState = rememberLazyStaggeredGridState()
-
+    val selectedItemIndex = state.selectedItemIndex
 
 
 
     Scaffold(
         topBar = {
-            if (state.selectedItemIndex == 1) {
+            if (selectedItemIndex == 1) {
                 OutlinedTextField(
                     value = state.searchQuery,
                     onValueChange = { viewModel.onEvent(HomeScreenUiEvent.OnSearchQueryChange(query = it)) },
@@ -63,19 +70,30 @@ fun HomeScreen(
             }
         },
         bottomBar = {
+            if(selectedItemIndex != 2) {
             NavigationBar {
                 items.forEachIndexed { index, item ->
                     NavigationBarItem(
-                        selected = state.selectedItemIndex == index,
+                        selected = selectedItemIndex == index,
                         onClick = {
                             viewModel.changeItemIndex(index)
-                                  },
+                        },
                         label = {
-                            Text(text = item.title)
+                            // Animation for bottombar text
+                            AnimatedVisibility(
+                                visible = selectedItemIndex == index,
+                                enter = fadeIn() + expandHorizontally(expandFrom = Alignment.Start),
+                                exit = fadeOut() + shrinkHorizontally(shrinkTowards = Alignment.Start)
+                            ) {
+                                Text(text = item.title, fontFamily = jua, fontSize = 14.sp)
+                            }
+                            if (selectedItemIndex != index) {
+                                Text(text = "") // Keeps the height consistent
+                            }
                         },
                         icon = {
                             Icon(
-                                imageVector = if (index == state.selectedItemIndex) {
+                                imageVector = if (selectedItemIndex == index) {
                                     item.selectedItem
                                 } else item.unselectedIcon,
                                 contentDescription = item.title
@@ -84,11 +102,11 @@ fun HomeScreen(
                         }
                     )
                 }
-
+            }
             }
         }
     ) { scaffpadding ->
-        when(state.selectedItemIndex) {
+        when(selectedItemIndex) {
             0,1 -> {
                 if (state.error == null) {
                     Box(
@@ -141,7 +159,7 @@ fun HomeScreen(
             }
             2 -> {
                 CartScreen(
-                    onBackClick = { Unit },
+                    onBackClick = { viewModel.changeItemIndex(0) },
                     onCheckoutClick = { onClickToCheckOut() }
                 )
             }
@@ -153,5 +171,4 @@ fun HomeScreen(
 
 
 }
-
 

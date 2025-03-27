@@ -1,5 +1,7 @@
 package com.example.shoppingapp.presentation.authscreen
 
+import android.content.SharedPreferences
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -15,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
-    private val repository: AuthRepository
+    private val repository: AuthRepository,
+    private val prefs: SharedPreferences
 ): ViewModel() {
 
 
@@ -28,6 +31,14 @@ class AuthViewModel @Inject constructor(
 
     init {
         authenticate()
+        loadUserCredentials()
+    }
+
+    private fun loadUserCredentials() {
+        val email = prefs.getString("email", "No Email Found") ?: "null"
+        val name = prefs.getString("name", "") ?: "null"
+        state = state.copy(currentEmail = email)
+        state = state.copy(currentName = name)
     }
 
     fun onEvent(event: AuthUiEvent) {
@@ -36,12 +47,16 @@ class AuthViewModel @Inject constructor(
             is AuthUiEvent.SignInEmailChanged -> { state = state.copy(signInEmail = event.value) }
             is AuthUiEvent.SignInPasswordChanged -> { state = state.copy(signInPassword = event.value) }
             AuthUiEvent.SignUp -> signUp()
+            AuthUiEvent.SignOut -> signOut()
             is AuthUiEvent.SignUpEmailChanged -> { state = state.copy(signUpEmail = event.value) }
             is AuthUiEvent.SignUpNameChanged -> { state = state.copy(signUpName = event.value) }
             is AuthUiEvent.SignUpPasswordChanged -> { state = state.copy(signUpPassword = event.value) }
         }
     }
 
+    fun showDialogState() {
+        state = state.copy(showDialog = !state.showDialog)
+    }
 
     private fun signUp() {
         viewModelScope.launch {
@@ -72,6 +87,19 @@ class AuthViewModel @Inject constructor(
 
 
 
+    private fun signOut() {
+        viewModelScope.launch {
+            state = state.copy(isLoading = true)
+            val result = repository.signOut()
+            resultChannel.send(result)
+            state = state.copy(isLoading = false)
+        }
+    }
+
+
+
+
+
     private fun authenticate() {
         viewModelScope.launch {
             state = state.copy(isLoading = true)
@@ -80,6 +108,8 @@ class AuthViewModel @Inject constructor(
             state = state.copy(isLoading = false)
         }
     }
+
+
 
 
 

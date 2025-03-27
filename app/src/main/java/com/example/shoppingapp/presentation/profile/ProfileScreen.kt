@@ -42,6 +42,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.shoppingapp.R
+import com.example.shoppingapp.auth.AuthResult
+import com.example.shoppingapp.presentation.authscreen.AuthUiEvent
+import com.example.shoppingapp.presentation.authscreen.AuthViewModel
 import com.example.shoppingapp.util.Resource
 
 @Composable
@@ -49,7 +52,7 @@ fun ProfileScreen (
     scaffFoldPadding: PaddingValues,
     onClickToSignUp: () -> Unit,
     onClickToSettings: () -> Unit,
-    viewModel: ProfileViewModel = hiltViewModel()
+    viewModel: AuthViewModel = hiltViewModel()
 ) {
 
     val state = viewModel.state
@@ -58,12 +61,10 @@ fun ProfileScreen (
 
     // Signout auth
     LaunchedEffect(viewModel, context) {
-        viewModel.profileResult.collect { result ->
+        viewModel.authResult.collect { result ->
             when(result) {
-                is Resource.Success-> {
-                    Unit
-                }
-                is Resource.Unauthorized -> {
+                is AuthResult.Authorized -> Unit
+                is AuthResult.Unauthorized -> {
                     Toast.makeText(
                         context,
                         "You have signed out",
@@ -71,7 +72,7 @@ fun ProfileScreen (
                     ).show()
                     onClickToSignUp()
                 }
-                is Resource.Error -> {
+                is AuthResult.UnknownError -> {
                     Toast.makeText(
                         context,
                         "An unknown error occurred",
@@ -79,9 +80,7 @@ fun ProfileScreen (
                     ).show()
                 }
 
-                is Resource.Loading -> {
-                    Unit
-                }
+                is AuthResult.Success -> Unit
             }
         }
     }
@@ -108,7 +107,7 @@ fun ProfileScreen (
 
         // Name
         Text(
-            text = "Mark Adam",
+            text = state.currentName,
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
             color = Color.Black
@@ -116,7 +115,7 @@ fun ProfileScreen (
 
         // Email
         Text(
-            text = "Sunny_Koelpin45@hotmail.com",
+            text = state.currentEmail,
             style = MaterialTheme.typography.bodyMedium,
             color = Color.Gray
         )
@@ -194,7 +193,7 @@ fun ProfileScreen (
                 },
                 confirmButton = {
                     TextButton(onClick = {
-                        viewModel.onEvent(ProfileScreenUiEvent.SignOut)
+                        viewModel.onEvent(AuthUiEvent.SignOut)
                         viewModel.showDialogState()
                     }) {
                         Text("Confirm")

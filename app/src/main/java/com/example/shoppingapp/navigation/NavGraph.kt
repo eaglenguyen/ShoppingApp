@@ -73,6 +73,9 @@ fun NavGraph (
                    },
                    onClickToHome = {
                        navController.navigate(HomeScreen)
+                   },
+                   onClickToSplash = {
+                       navController.navigate(SplashScreen)
                    }
                )
            }

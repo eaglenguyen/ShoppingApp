@@ -27,8 +27,6 @@ class HomeViewModel @Inject constructor(
 
     private var searchJob: Job? = null
 
-    private val resultChannel = Channel<Resource<Unit>>()
-    // val homeResult = resultChannel.receiveAsFlow()
 
     init {
         showProducts()
@@ -47,7 +45,6 @@ class HomeViewModel @Inject constructor(
 
     fun onEvent(event: HomeScreenUiEvent) {
         when(event) {
-            is HomeScreenUiEvent.SignOut -> signOut()
             is HomeScreenUiEvent.OnSearchQueryChange -> {
                 state = state.copy(searchQuery = event.query)
                 searchJob?.cancel()
@@ -59,22 +56,14 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun signOut() {
-        viewModelScope.launch {
-            state = state.copy(isLoading = true)
-            val result = repository.signOut()
-            resultChannel.send(result)
-            state = state.copy(isLoading = false)
-        }
-    }
+
 
      private fun showProducts(
         query: String = state.searchQuery.lowercase(),
     ) {
         viewModelScope.launch {
             state = state.copy(isLoading = true)
-            delay(100)
-            repository.getProductsList(query).collectLatest {
+            repository.getProductsList(query).collect {
                 when(it) {
                     is Resource.Success -> {
                         state = state.copy(

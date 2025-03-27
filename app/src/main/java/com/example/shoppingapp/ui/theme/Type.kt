@@ -49,3 +49,17 @@ val radioCanadaFontFamily = FontFamily(
 val ibmFontFamily = FontFamily(
     Font(R.font.ibmplexsans_medium, FontWeight.Medium)
 )
+
+val sourGummy = FontFamily(
+    Font(R.font.sourgummy, FontWeight.Normal),
+    Font(R.font.sourgummy_thin, FontWeight.Thin),
+    Font(R.font.sourgummy_light, FontWeight.Light)
+)
+
+val funnelDisplay = FontFamily(
+    Font(R.font.funneldisplay_reg, FontWeight.Normal)
+)
+
+val jua = FontFamily(
+    Font(R.font.jua, FontWeight.Normal)
+)
