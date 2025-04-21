@@ -1,7 +1,5 @@
 package com.example.shoppingapp.presentation.checkout.address
 
-import com.example.shoppingapp.presentation.authscreen.AuthUiEvent
-
 sealed class AddressUIEvent {
     data class NameChange (val value: String): AddressUIEvent()
     data class AddressChange (val value: String): AddressUIEvent()

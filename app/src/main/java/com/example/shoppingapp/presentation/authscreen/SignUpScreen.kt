@@ -64,7 +64,7 @@ fun SignUpScreen(
                 is AuthResult.UnknownError -> {
                     Toast.makeText(
                         context,
-                        "An unknown error occurred",
+                        "Error",
                         Toast.LENGTH_LONG
                     ).show()
                 }
