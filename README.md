@@ -30,3 +30,4 @@ This is the Android front-end of **ShoppingApp**, a modern shopping list app bui
 - **Deployed backend using Oracle Cloud**
 
 ---
+## 🚀 Getting Started
