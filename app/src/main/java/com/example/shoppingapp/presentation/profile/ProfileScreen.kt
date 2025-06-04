@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -39,6 +40,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.UiMode
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.shoppingapp.R
@@ -52,6 +54,7 @@ fun ProfileScreen (
     scaffFoldPadding: PaddingValues,
     onClickToSignUp: () -> Unit,
     onClickToSettings: () -> Unit,
+    onClickToOrders: () -> Unit,
     viewModel: AuthViewModel = hiltViewModel()
 ) {
 
@@ -126,7 +129,7 @@ fun ProfileScreen (
         val options = listOf(
             "Profile" to Icons.Default.Person,
             "Setting" to Icons.Default.Settings,
-            "Contact" to Icons.Default.Email,
+            "Purchase History" to Icons.Default.ShoppingCart,
             "Share App" to Icons.Default.Share,
             "Help" to Icons.Default.Info
         )
@@ -140,7 +143,7 @@ fun ProfileScreen (
                         when(title) {
                             "Profile" -> Toast.makeText(context, "1", Toast.LENGTH_LONG).show()
                             "Setting" -> onClickToSettings()
-                            "Contact" -> Toast.makeText(context, "3", Toast.LENGTH_LONG).show()
+                            "Purchase History" -> onClickToOrders()
                             "Share App" -> Toast.makeText(context, "4", Toast.LENGTH_LONG).show()
                             "Help" -> Toast.makeText(context, "5", Toast.LENGTH_LONG).show()
                         }

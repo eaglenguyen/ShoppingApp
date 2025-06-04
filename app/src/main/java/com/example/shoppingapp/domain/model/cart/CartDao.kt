@@ -1,4 +1,4 @@
-package com.example.shoppingapp.data.remote.localcart
+package com.example.shoppingapp.domain.model.cart
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -32,6 +32,9 @@ interface CartDao {
 
     @Query("SELECT * from cart")
     fun getCart(): Flow<List<Cart>>
+
+    @Query("DELETE FROM cart")
+    suspend fun clearCart()
 
     // After converting the price: String into REAL (floating-point number aka decimals) same as Double in Kotlin
     // Gets the total sum value from the cart table,

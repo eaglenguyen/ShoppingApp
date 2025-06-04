@@ -15,6 +15,8 @@ import com.example.shoppingapp.presentation.cart.CartScreen
 import com.example.shoppingapp.presentation.checkout.CheckoutScreen
 import com.example.shoppingapp.presentation.checkout.OrderCompleteScreen
 import com.example.shoppingapp.presentation.home.HomeScreen
+import com.example.shoppingapp.presentation.orders.OrderDetailScreen
+import com.example.shoppingapp.presentation.orders.OrderScreen
 import com.example.shoppingapp.presentation.product_info.ProductInfoScreen
 import com.example.shoppingapp.presentation.profile.ProfileScreen
 import com.example.shoppingapp.presentation.profile.subprofile.settings.SettingsScreen
@@ -48,6 +50,12 @@ fun NavGraph (
                    },
                    onClickToCheckOut = {
                        navController.navigate(CheckoutScreen)
+                   },
+                   toOrders = {
+                       navController.navigate(OrdersScreen)
+                   },
+                   onClickToOrders = {
+                       navController.navigate(OrdersScreen)
                    }
 
                )
@@ -103,6 +111,9 @@ fun NavGraph (
                    },
                    onClickToSettings = {
                        navController.navigate(SettingsScreen)
+                   },
+                   onClickToOrders = {
+                       navController.navigate(OrdersScreen)
                    }
                )
            }
@@ -125,6 +136,9 @@ fun NavGraph (
                    },
                    onCheckoutClick = {
                        navController.navigate(CheckoutScreen)
+                   },
+                   toOrders = {
+                       navController.navigate(OrdersScreen)
                    }
                )
            }
@@ -152,6 +166,27 @@ fun NavGraph (
                      navController.navigateUp()
                  }, onSaveClick = {
                      navController.navigate(CheckoutScreen)
+                   }
+               )
+           }
+
+           composable<OrdersScreen> {
+               OrderScreen(
+                   onBackClick = {
+                       navController.navigateUp()
+                   },
+                   onClickToDetails = { orderId ->
+                       navController.navigate(OrdersDetailScreen(orderId))
+                   }
+               )
+           }
+
+           composable<OrdersDetailScreen> { orderId ->
+               val positionId = orderId.toRoute<OrdersDetailScreen>()
+               OrderDetailScreen(
+                   //orderId = positionId.orderId,
+                   onBackClick = {
+                       navController.navigateUp()
                    }
                )
            }

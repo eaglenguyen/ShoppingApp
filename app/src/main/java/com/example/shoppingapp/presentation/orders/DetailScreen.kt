@@ -1,4 +1,4 @@
-package com.example.shoppingapp.presentation.cart
+package com.example.shoppingapp.presentation.orders
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
@@ -31,14 +31,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.shoppingapp.domain.model.cart.Cart
+import com.example.shoppingapp.domain.model.orders.OrderDetailEntity
+import com.example.shoppingapp.navigation.DetailScreen
 import io.github.composegears.valkyrie.BaselineRemoveCircle24
 
 @Composable
-fun CartItem(
-    item: Cart,
-    onDelete: () -> Unit,
-    removeQuantity: () -> Unit,
-    addQuantity: () -> Unit
+fun DetailScreen(
+    item: OrderDetailEntity,
 ) {
     Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         AsyncImage(
@@ -57,52 +56,8 @@ fun CartItem(
                     .border(1.dp, Color.Gray, shape = CircleShape) // Outlined oval shape
                     .padding(1.dp) // Padding inside the border
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    IconButton(
-                        onClick = { removeQuantity() },
-                        modifier = Modifier.size(40.dp)
-                    ) {
-                        Icon(
-                            imageVector = if (item.quantity <= 1) Icons.Default.Delete else BaselineRemoveCircle24,
-                            contentDescription = "Decrease quantity"
-                        )
-                    }
 
-                    Text(text = item.quantity.toString(), fontSize = 14.sp, modifier = Modifier.padding(horizontal = 8.dp))
-
-                    IconButton(
-                        onClick = { addQuantity() },
-                        modifier = Modifier.size(40.dp)
-                    ) {
-                        Icon(Icons.Default.Add, contentDescription = "Increase quantity")
-                    }
                 }
-            }
-            val buttonModifier = Modifier
-                .size(width = 80.dp, height = 45.dp) // Adjust size
-                .padding(2.dp)
-
-            Row(horizontalArrangement = Arrangement.SpaceBetween) {
-                TextButton(
-                    onClick = { onDelete() },
-                    modifier = buttonModifier,
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = Color.DarkGray),
-                    border = BorderStroke(1.dp, Color.DarkGray)
-
-                ) { Text("Delete", fontSize = 13.sp) }
-                TextButton(
-                    onClick = { /* TODO: Save for later */ },
-                    modifier = buttonModifier,
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = Color.DarkGray),
-                    border = BorderStroke(1.dp, Color.DarkGray))
-                { Text("Save") }
-                TextButton(
-                    onClick = { /* TODO: Share */ },
-                    modifier = buttonModifier,
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = Color.DarkGray),
-                    border = BorderStroke(1.dp, Color.DarkGray))
-                { Text("Share") }
             }
         }
     }
-}

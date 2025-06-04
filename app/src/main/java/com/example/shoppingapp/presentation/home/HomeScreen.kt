@@ -43,7 +43,9 @@ fun HomeScreen(
     onClickToSignUp: () -> Unit,
     onClickToSettings: () -> Unit,
     onClickToDetails: (Int) -> Unit,
-    onClickToCheckOut: () -> Unit
+    onClickToCheckOut: () -> Unit,
+    onClickToOrders: () -> Unit,
+    toOrders: () -> Unit
 ) {
 
 
@@ -113,7 +115,7 @@ fun HomeScreen(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(scaffpadding),
-                        contentAlignment = Alignment.Center,
+                        contentAlignment = Center,
                     ) {
 
                         Column(
@@ -134,6 +136,7 @@ fun HomeScreen(
                                         price = "$${item.price}",
                                         image = item.image,
                                         rating = item.rating.rate.toString(),
+                                        // Sent to savedstatehandle through navigation
                                         modifier = Modifier.clickable { onClickToDetails(item.id) }
                                     )
                                 }
@@ -160,10 +163,11 @@ fun HomeScreen(
             2 -> {
                 CartScreen(
                     onBackClick = { viewModel.changeItemIndex(0) },
-                    onCheckoutClick = { onClickToCheckOut() }
+                    onCheckoutClick = { onClickToCheckOut() },
+                    toOrders = { toOrders() },
                 )
             }
-            3 -> { ProfileScreen(scaffpadding, onClickToSignUp, onClickToSettings) }
+            3 -> { ProfileScreen(scaffpadding, onClickToSignUp, onClickToSettings, onClickToOrders) }
 
         }
 

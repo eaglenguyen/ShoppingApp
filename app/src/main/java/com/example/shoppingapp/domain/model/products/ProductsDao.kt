@@ -1,4 +1,4 @@
-package com.example.shoppingapp.data.remote.local
+package com.example.shoppingapp.domain.model.products
 
 import androidx.room.Dao
 import androidx.room.Insert

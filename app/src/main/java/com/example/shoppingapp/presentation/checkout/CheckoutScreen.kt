@@ -161,7 +161,10 @@ fun CheckoutScreen(
 
         // Confirm Order Button
         Button(
-            onClick = { onClickToSuccess() },
+            onClick = {
+                onClickToSuccess()
+                viewModel.confirmOrder(state.cartList) // if there are issues saving orders, use Channels to listen/collect events
+                      },
             modifier = Modifier
                 .fillMaxWidth().background(Color.Black, shape = RoundedCornerShape(18.dp)),
             colors = ButtonDefaults.buttonColors(containerColor = Color.Black),

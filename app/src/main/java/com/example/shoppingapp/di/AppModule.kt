@@ -9,15 +9,17 @@ import com.example.shoppingapp.auth.AuthRepository
 import com.example.shoppingapp.auth.AuthRepositoryImpl
 import com.example.shoppingapp.data.remote.StoreApi
 import com.example.shoppingapp.data.remote.StoreApi.Companion.BASE_URL
-import com.example.shoppingapp.data.remote.address.AddressDao
-import com.example.shoppingapp.data.remote.address.AddressDatabase
-import com.example.shoppingapp.data.remote.local.ProductsDatabase
-import com.example.shoppingapp.data.remote.localcart.CartDao
+import com.example.shoppingapp.domain.model.address.AddressDao
+import com.example.shoppingapp.domain.model.address.AddressDatabase
+import com.example.shoppingapp.domain.model.products.ProductsDatabase
+import com.example.shoppingapp.domain.model.cart.CartDao
 import com.example.shoppingapp.data.repository.AddressRepository
 import com.example.shoppingapp.data.repository.CartRepository
+import com.example.shoppingapp.data.repository.OrdersRepository
 import com.example.shoppingapp.data.repository.ProductsRepositoryImpl
 import com.example.shoppingapp.data.util.Converters
 import com.example.shoppingapp.data.util.GsonParser
+import com.example.shoppingapp.domain.model.orders.OrdersDao
 import com.example.shoppingapp.domain.repository.ProductsRepository
 import com.google.gson.Gson
 import dagger.Module
@@ -99,7 +101,14 @@ object AppModule {
     @Provides
     fun provideAddressDao(db: AddressDatabase) = db.addressDao
 
+    @Provides
+    fun provideOrdersDao(db: ProductsDatabase) = db.ordersDao
 
+
+
+    @Provides
+    @Singleton
+    fun provideOrderRepository(ordersDao: OrdersDao) : OrdersRepository = OrdersRepository(ordersDao)
 
     @Provides
     @Singleton

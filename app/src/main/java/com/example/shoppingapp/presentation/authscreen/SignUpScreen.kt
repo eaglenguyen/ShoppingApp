@@ -54,13 +54,7 @@ fun SignUpScreen(
                 is AuthResult.Authorized -> {
                     onClickToHome()
                 }
-                is AuthResult.Unauthorized -> {
-                    Toast.makeText(
-                        context,
-                        "You are not authorized",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
+                is AuthResult.Unauthorized -> { Unit }
                 is AuthResult.UnknownError -> {
                     Toast.makeText(
                         context,

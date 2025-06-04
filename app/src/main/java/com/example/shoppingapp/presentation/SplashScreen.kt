@@ -156,7 +156,7 @@ fun CustomDialog(
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE6F6FF), contentColor = Color.DarkGray)) {
                     Text("Login/Signup",
                         fontFamily = sourGummy,
-                        fontWeight = FontWeight.Light,
+                        fontWeight = FontWeight.Light
                         )
 
 
@@ -168,7 +168,9 @@ fun CustomDialog(
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF004965))) {
                     Text("Continue as Guest",
                         fontFamily = sourGummy,
-                        fontWeight = FontWeight.Light,)
+                        fontWeight = FontWeight.Light,
+                        color = Color.White
+                    )
                 }
             }
 

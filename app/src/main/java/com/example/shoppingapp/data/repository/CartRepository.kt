@@ -1,7 +1,7 @@
 package com.example.shoppingapp.data.repository
 
-import com.example.shoppingapp.data.remote.localcart.Cart
-import com.example.shoppingapp.data.remote.localcart.CartDao
+import com.example.shoppingapp.domain.model.cart.Cart
+import com.example.shoppingapp.domain.model.cart.CartDao
 import com.example.shoppingapp.domain.model.Product
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -15,6 +15,8 @@ class CartRepository @Inject constructor(
     fun getTotalPrice(): Flow<Double?> = cartDao.getTotalPrice()
 
     fun getTotalQuantity(): Flow<Int?> = cartDao.getTotalQuantity()
+
+    suspend fun clearCart() = cartDao.clearCart()
 
     suspend fun addToCart(product: Product) {
         val existingItem = cartDao.getCartItemById(product.id)
@@ -31,7 +33,7 @@ class CartRepository @Inject constructor(
             cartDao.insert(cartItem)
         }
     }
-    suspend fun removeFromCart(product: Product) {
+    suspend fun deleteCartItem(product: Product) {
         val cartItem = Cart(
             id = product.id,
             title = product.title,

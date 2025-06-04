@@ -1,6 +1,6 @@
 package com.example.shoppingapp.data.mapper
 
-import com.example.shoppingapp.data.remote.local.ProductsEntity
+import com.example.shoppingapp.domain.model.products.ProductsEntity
 import com.example.shoppingapp.domain.model.Product
 
 fun List<ProductsEntity>.toProduct(): List<Product> {

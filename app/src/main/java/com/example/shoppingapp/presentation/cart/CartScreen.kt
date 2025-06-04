@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -40,6 +41,7 @@ import com.example.shoppingapp.presentation.product_info.SharedViewModel
 fun CartScreen(
     onBackClick: () -> Unit,
     onCheckoutClick: () -> Unit,
+    toOrders: () -> Unit,
     viewModel: SharedViewModel = hiltViewModel()
 ) {
 
@@ -61,8 +63,8 @@ fun CartScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = { /* Open menu */ }) {
-                        Icon(imageVector = Icons.Default.MoreVert, contentDescription = "More")
+                    IconButton(onClick = { toOrders() }) {
+                        Icon(imageVector = Icons.Default.ShoppingCart, contentDescription = "More")
                     }
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(

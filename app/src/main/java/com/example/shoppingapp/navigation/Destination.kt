@@ -36,3 +36,13 @@ object SuccessScreen
 
 @Serializable
 object SplashScreen
+
+@Serializable
+object OrdersScreen
+
+
+@Serializable
+data class OrdersDetailScreen(
+    val orderId: Int
+)
+

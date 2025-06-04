@@ -35,7 +35,7 @@ class AuthViewModel @Inject constructor(
 
     private fun loadUserCredentials() {
         val email = prefs.getString("email", "No Email Found") ?: "null"
-        val name = prefs.getString("name", "") ?: "null"
+        val name = prefs.getString("name", "No Name") ?: "null"
         state = state.copy(currentEmail = email)
         state = state.copy(currentName = name)
     }

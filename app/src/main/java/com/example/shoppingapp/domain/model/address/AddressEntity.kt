@@ -1,4 +1,4 @@
-package com.example.shoppingapp.data.remote.address
+package com.example.shoppingapp.domain.model.address
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

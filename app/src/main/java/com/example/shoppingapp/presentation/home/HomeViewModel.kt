@@ -24,7 +24,7 @@ class HomeViewModel @Inject constructor(
 
     var state by mutableStateOf(HomeState())
 
-
+    // Able to control coroutine
     private var searchJob: Job? = null
 
 
@@ -42,7 +42,7 @@ class HomeViewModel @Inject constructor(
 
 
 
-
+    // Cancels any previous Job before launching a new one to avoid launching a coroutine after every keystroke
     fun onEvent(event: HomeScreenUiEvent) {
         when(event) {
             is HomeScreenUiEvent.OnSearchQueryChange -> {

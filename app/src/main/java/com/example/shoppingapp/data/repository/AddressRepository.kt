@@ -1,7 +1,7 @@
 package com.example.shoppingapp.data.repository
 
-import com.example.shoppingapp.data.remote.address.AddressDao
-import com.example.shoppingapp.data.remote.address.AddressEntity
+import com.example.shoppingapp.domain.model.address.AddressDao
+import com.example.shoppingapp.domain.model.address.AddressEntity
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

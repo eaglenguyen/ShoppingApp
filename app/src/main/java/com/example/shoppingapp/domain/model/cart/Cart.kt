@@ -1,4 +1,4 @@
-package com.example.shoppingapp.data.remote.localcart
+package com.example.shoppingapp.domain.model.cart
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

@@ -3,7 +3,7 @@ package com.example.shoppingapp.data.repository
 import com.example.shoppingapp.data.mapper.toProduct
 import com.example.shoppingapp.data.mapper.toProductsEntity
 import com.example.shoppingapp.data.remote.StoreApi
-import com.example.shoppingapp.data.remote.local.ProductsDao
+import com.example.shoppingapp.domain.model.products.ProductsDao
 import com.example.shoppingapp.domain.model.Product
 import com.example.shoppingapp.domain.repository.ProductsRepository
 import com.example.shoppingapp.util.Resource
