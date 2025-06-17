@@ -50,7 +50,8 @@ fun DetailScreen(
         Column(modifier = Modifier.weight(1f)) {
             Text(text = item.title, fontWeight = FontWeight.Medium, fontSize = 15.sp)
             Text(text = "$${item.price}", fontWeight = FontWeight.Bold, fontSize = 18.sp, color = Color.Black)
-            Text(text = "In Stock", fontWeight = FontWeight.Normal, fontSize = 15.sp, color = Color(0xFF006400) ) // dark green
+            Text(text = "Quantity: ${item.quantity}", fontSize = 14.sp)
+
             Box(
                 modifier = Modifier
                     .border(1.dp, Color.Gray, shape = CircleShape) // Outlined oval shape

@@ -1,7 +1,9 @@
 package com.example.shoppingapp.presentation.orders
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -16,11 +18,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -29,16 +34,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.shoppingapp.navigation.DetailScreen
-import com.example.shoppingapp.presentation.product_info.SharedViewModel
+import com.example.shoppingapp.presentation.shared.SharedViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OrderScreen(
     onBackClick: () -> Unit,
     onClickToDetails: (Int) -> Unit,
+    onClickToHome: () -> Unit,
     viewModel: SharedViewModel = hiltViewModel()
 ) {
 
@@ -56,20 +62,52 @@ fun OrderScreen(
         },
             )
         if (state.orderList.isEmpty()) {
-            Text("You currently have no Order History", modifier = Modifier.padding(16.dp))
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "No Order History, Make Your First Purchase!",
+                        style = MaterialTheme.typography.bodyLarge,
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Button(
+                        onClick = onClickToHome,
+                        modifier = Modifier.padding(10.dp)
+                            .border(
+                                width = 1.dp,
+                                color = Color.Black,
+                                shape = RoundedCornerShape(18.dp)
+                            ),
+                        colors = ButtonDefaults.buttonColors(Color.White)
+                    ) {
+                        Text("Start Shopping!", color = Color.Black)
+                    }
+                }
+            }
         } else {
             LazyColumn(contentPadding = PaddingValues(16.dp)) {
                 items(state.orderList) { list ->
-                    val orderNum = list.order.orderId.toString()
+                    val order = list.order
+                    val totalItems = list.detailItems.sumOf { it.quantity } // how to access the total items
+                    val totalPrice = list.detailItems
                     OrderCard(
-                        orderNumber = orderNum,
+                        orderNumber = order.orderId.toString(),
                         trackingNumber = "1Z09123",
-                        quantity = 1,
+                        quantity = totalItems,
                         totalAmount = "1",
                         date = list.order.orderDate,
                         status = "Delivered",
                         toDetailScreen = { orderId -> onClickToDetails(orderId) }
                     )
+
                     HorizontalDivider(
                         modifier = Modifier.padding(vertical = 8.dp),
                         thickness = 5.dp,
@@ -107,8 +145,8 @@ fun OrderCard(
             Text(text = "Tracking number: $trackingNumber")
             Spacer(modifier = Modifier.height(4.dp))
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                Text(text = "Quantity: $quantity")
-                Text(text = "Total Amount: $totalAmount")
+                Text(text = "Item(s): $quantity")
+                Text(text = "Total Amount: $$totalAmount")
             }
             Spacer(modifier = Modifier.height(12.dp))
             Row(

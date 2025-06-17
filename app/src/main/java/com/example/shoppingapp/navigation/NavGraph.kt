@@ -177,6 +177,9 @@ fun NavGraph (
                    },
                    onClickToDetails = { orderId ->
                        navController.navigate(OrdersDetailScreen(orderId))
+                   },
+                   onClickToHome = {
+                       navController.navigate(HomeScreen)
                    }
                )
            }
@@ -184,7 +187,7 @@ fun NavGraph (
            composable<OrdersDetailScreen> { orderId ->
                val positionId = orderId.toRoute<OrdersDetailScreen>()
                OrderDetailScreen(
-                   //orderId = positionId.orderId,
+                   orderId = positionId.orderId,
                    onBackClick = {
                        navController.navigateUp()
                    }

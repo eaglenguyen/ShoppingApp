@@ -6,5 +6,6 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "orders")
 data class OrdersEntity (
     @PrimaryKey val orderId: Int,
-    val orderDate: String
+    val orderDate: String,
+
 )

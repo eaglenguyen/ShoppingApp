@@ -1,4 +1,4 @@
-package com.example.shoppingapp.presentation.product_info
+package com.example.shoppingapp.presentation.shared
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -12,16 +12,12 @@ import com.example.shoppingapp.data.repository.CartRepository
 import com.example.shoppingapp.data.repository.OrdersRepository
 import com.example.shoppingapp.domain.model.Product
 import com.example.shoppingapp.domain.model.cart.Cart
-import com.example.shoppingapp.domain.model.junction.OrderWithCartItems
-import com.example.shoppingapp.domain.model.junction.OrdersCartJunction
-import com.example.shoppingapp.domain.model.orders.OrderDetailEntity
 import com.example.shoppingapp.domain.model.orders.OrdersEntity
 import com.example.shoppingapp.domain.repository.ProductsRepository
 import com.example.shoppingapp.presentation.checkout.address.AddressUIEvent
 import com.example.shoppingapp.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
@@ -71,9 +67,12 @@ class SharedViewModel @Inject constructor(
                     state = state.state,
                     zipcode = state.zipcode
                 )
+
             )
         }
     }
+
+
 
     // collect {} to listen for updates and update the UI state whenever a new address is emitted.
     private fun getSavedAddress() {
@@ -200,18 +199,29 @@ class SharedViewModel @Inject constructor(
     fun confirmOrder(cartItem: List<Cart>) {
         viewModelScope.launch {
             val newOrder = OrdersEntity(
-                orderId = generateOrderId(),
-                orderDate = getCurrentDate()
-            )
+                    orderId = generateOrderId(),
+                    orderDate = getCurrentDate(),
+                )
             ordersRepository.confirmOrder(newOrder,cartItem)
+            delay(1500)
+            cartRepository.clearCart()
 
         }
+    }
+
+    private fun getCurrentDate(): String {
+        val formatter = SimpleDateFormat("MMM dd", Locale.getDefault())
+        return formatter.format(Date())
+    }
+
+    private fun generateOrderId(): Int {
+        return (System.currentTimeMillis()).toInt()
     }
 
     fun getOrderListId(orderId: Int) {
         viewModelScope.launch {
             val position = saveStateHandle.get<Int>("orderId") ?: return@launch
-            ordersRepository.getOrdersWithCartItemsId(position)
+            // ordersRepository.getOrdersWithCartItemsId(position)
         }
     }
 
@@ -221,13 +231,6 @@ class SharedViewModel @Inject constructor(
             }
         }
 
-        private fun getCurrentDate(): String {
-            val formatter = SimpleDateFormat("MMM dd", Locale.getDefault())
-            return formatter.format(Date())
-        }
 
-        private fun generateOrderId(): Int {
-            return (System.currentTimeMillis()).toInt()
-        }
 
     }

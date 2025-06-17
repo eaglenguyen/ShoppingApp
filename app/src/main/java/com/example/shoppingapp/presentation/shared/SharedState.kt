@@ -1,4 +1,4 @@
-package com.example.shoppingapp.presentation.product_info
+package com.example.shoppingapp.presentation.shared
 
 import com.example.shoppingapp.domain.model.cart.Cart
 import com.example.shoppingapp.domain.model.Product
@@ -26,7 +26,11 @@ data class SharedState (
     val orderList: List<OrderWithCartItems> = emptyList(),
 
     val orderListId: OrderWithCartItems = OrderWithCartItems(
-        order = OrdersEntity(orderId = 0, orderDate = ""),
+        order = OrdersEntity(
+            orderId = 0,
+            orderDate = "",
+
+        ),
         detailItems = emptyList()
     )
 

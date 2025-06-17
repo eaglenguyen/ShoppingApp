@@ -12,7 +12,13 @@ import com.example.shoppingapp.domain.model.orders.OrdersDao
 import com.example.shoppingapp.domain.model.orders.OrdersEntity
 
 
-@Database(entities = [ProductsEntity::class, Cart::class, OrdersEntity::class, OrderDetailEntity::class, OrdersCartJunction::class], version = 9, exportSchema = false)
+@Database(entities = [
+    ProductsEntity::class,
+    Cart::class,
+    OrdersEntity::class,
+    OrderDetailEntity::class,
+    OrdersCartJunction::class
+                     ], version = 14, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class ProductsDatabase: RoomDatabase() {
 

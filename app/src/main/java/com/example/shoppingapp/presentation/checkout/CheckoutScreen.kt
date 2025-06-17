@@ -36,7 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.shoppingapp.presentation.product_info.SharedViewModel
+import com.example.shoppingapp.presentation.shared.SharedViewModel
 
 @SuppressLint("DefaultLocale")
 @Composable

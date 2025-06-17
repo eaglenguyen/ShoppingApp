@@ -22,17 +22,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.shoppingapp.presentation.cart.CartItem
-import com.example.shoppingapp.presentation.product_info.SharedViewModel
+import com.example.shoppingapp.presentation.shared.SharedViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OrderDetailScreen(
+    orderId: Int,
     onBackClick: () -> Unit,
     viewModel: SharedViewModel = hiltViewModel()
 ) {
 
     val state = viewModel.state
+    val selectedOrder = state.orderList.find { it.order.orderId == orderId }
+
+    // val firstOrder = state.orderList.getOrNull(0)
+
 
 
 
@@ -59,14 +63,13 @@ fun OrderDetailScreen(
     ) { padding ->
         Column(modifier = Modifier.padding(padding)) {
             if (state.orderList.isEmpty()) {
-                Text("Your cart is currently empty", modifier = Modifier.padding(16.dp))
+                Text("No Order History, Make Your First Purchase!", modifier = Modifier.padding(16.dp))
             } else {
                     LazyColumn(
                         modifier = Modifier.weight(1f)
                     ) {
-                        val firstOrder = state.orderList.getOrNull(0)
-                        firstOrder?.detailItems?.let { cartList ->
-                            items(cartList) { detailItem ->
+                        if (selectedOrder != null) {
+                            items(selectedOrder.detailItems) { detailItem ->
                                 DetailScreen (
                                     item = detailItem,
                                 )
@@ -77,13 +80,14 @@ fun OrderDetailScreen(
                                 )
                             }
                         }
-
+                        }
                         }
                     }
                 }
+    Spacer(modifier = Modifier.height(16.dp))
 
-                    }
+
+}
 
 
-            Spacer(modifier = Modifier.height(16.dp))
-        }
+

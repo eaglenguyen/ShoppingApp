@@ -10,12 +10,12 @@ import com.example.shoppingapp.domain.model.orders.OrdersEntity
 data class OrderWithCartItems(
     @Embedded val order: OrdersEntity,
     @Relation(
-        parentColumn = "orderId", // related to val order
-        entityColumn = "id", // related to val cartItems
+        parentColumn = "orderId", // id name from to OrdersEntity
+        entityColumn = "id", // id name from to OrderDetailEntity
         associateBy = Junction(
             value = OrdersCartJunction::class,
-            parentColumn = "orderId",
-            entityColumn = "cartId"
+            parentColumn = "orderId", // primarykey name
+            entityColumn = "detailId" // primarykey name
         ) // joining both tables
     )
     val detailItems: List<OrderDetailEntity>
